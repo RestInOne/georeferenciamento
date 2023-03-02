@@ -1,16 +1,23 @@
 import * as S from './styled'
-
+import { filter } from '../../state/clients'
+import { Filters } from '../../enums/filter'
+import { useRef } from 'react'
+import { useSetRecoilState } from 'recoil'
 
 export function Sidebar(){
+
+    const selectorRef = useRef<HTMLSelectElement>(null);
+    const setFilters = useSetRecoilState(filter);
+
 
     return (
         <S.Nav>
             <S.Label htmlFor='condition'>Selecione o filtro</S.Label>
-            <S.ConditionFilter id='condition'>
-                <S.CondititionSelector value="depressão">
-                  Depressão
+            <S.ConditionFilter ref={selectorRef} id='condition'>
+                <S.CondititionSelector value="diabetes">
+                  Diabetes
                 </S.CondititionSelector>
-                <S.CondititionSelector value="hipertensão">
+                <S.CondititionSelector value="adhd">
                   Hipertensão
                 </S.CondititionSelector>
             </S.ConditionFilter>

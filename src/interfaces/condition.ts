@@ -1,6 +1,7 @@
+import { Filters } from "../enums/filter";
 
 
 export interface ICondition {
-    name: string,
-    color: string
+    name: Filters
 }
+

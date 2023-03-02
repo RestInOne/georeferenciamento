@@ -13,13 +13,13 @@ import { useEffect, useRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { clientGeolocation } from '../../state/clients'
 
-const MapTest  = () => {
+const MapTest = () => {
 
     const geolocations = useRecoilValue(clientGeolocation)
     const mapRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const iconStyle = new Style({
+          const iconStyle = new Style({
             image: new Icon({
               anchor: [0.5, 46],
               anchorXUnits: 'fraction',
@@ -31,7 +31,7 @@ const MapTest  = () => {
           const pointFeatures : Feature<Point>[] = []
 
           for (let i = 0; i < geolocations.length; i++){
-            pointFeatures.push( new Feature({
+            pointFeatures.push(new Feature({
                 geometry: new Point(fromLonLat([geolocations[i].lon, geolocations[i].lat])),
               }))
             }
@@ -54,8 +54,8 @@ const MapTest  = () => {
               vectorLayer,
             ],
             view: new View({
-              center: fromLonLat([-46.6353714, -23.5524264]),
-              zoom: 15,
+              center: fromLonLat([0, 0]),
+              zoom: 4,
             }),
           });
       

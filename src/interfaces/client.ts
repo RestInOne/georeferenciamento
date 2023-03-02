@@ -7,6 +7,6 @@ export interface IClient {
     cpf: string
     bornYear: number
     age: number
-    condition: ICondition
+    condition: ICondition[]
     address: IAddress
 }
