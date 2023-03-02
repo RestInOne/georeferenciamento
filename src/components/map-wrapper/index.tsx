@@ -13,7 +13,6 @@ import { coordinate } from "../../state/map";
 
 export default function MapWrapper(props: any){
 
-    
 
     const [ map, setMap ] = useState<Map>()
     const [ featuresLayer, setFeaturesLayer ] = useState<VectorLayer<VectorSource<Geometry>>>()
