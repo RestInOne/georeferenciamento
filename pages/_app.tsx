@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import { ThemeProvider, DefaultTheme } from 'styled-components'
-import GlobalStyle from '../components/globalstyles'
+import { GlobalStyle } from '../src/theme/globalstyles'
+import { RecoilRoot } from 'recoil'
 
 const theme: DefaultTheme = {
   colors: {
@@ -12,10 +13,13 @@ const theme: DefaultTheme = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
+    <RecoilRoot>
+    <GlobalStyle/>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Component {...pageProps} />
       </ThemeProvider>
+    </RecoilRoot>
     </>
   )
 }
