@@ -6,8 +6,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/openlayers": "^4.6.18",
     "axios": "^1.3.4",
+    "dotenv": "^16.0.3",
     "next": "latest",
     "ol": "^7.2.2",
     "react": "^18.2.0",

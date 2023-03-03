@@ -1,6 +1,6 @@
 import { atom, selector } from "recoil";
 import { Filters } from "../enums/filter";
-import getGeolocationByAddress from "../gateways/getGeolocation";
+import { getGeolocation } from "../gateways/getGeolocation";
 import { IClient } from "../interfaces/client";
 import { ICondition } from "../interfaces/condition";
 import { IGeolocation } from "../interfaces/geolocation";
@@ -19,7 +19,8 @@ export const clients = atom<IClient[]>({
         }],
         address: {
           street: "Rua Francisco Rodrigues Seckler",
-          number: 111
+          number: 111,
+          city: "São Paulo"
         }
       } ]
 })
@@ -30,7 +31,7 @@ export const clientGeolocation = selector<IGeolocation[]>({
         const client = get(clients)
         let geolocation : IGeolocation[] = []
         for(let i = 0; i < client.length; i++){
-            geolocation.push(await getGeolocationByAddress(client[i].address.street, client[i].address.number))
+            geolocation.push(await getGeolocation(client[i].address.street, client[i].address.number, client[i].address.city))
         }
 
         return geolocation
@@ -57,11 +58,11 @@ export const filteredGeolocationClients = selector<IGeolocation[]>({
 
       if (filters[0].name === Filters.EVERY){
         for(let i = 0; i < client.length; i++){
-          geolocation.push(await getGeolocationByAddress(client[i].address.street, client[i].address.number))
+          geolocation.push(await getGeolocation(client[i].address.street, client[i].address.number, client[i].address.city))
       }
       } else {
         for(let i = 0; i < filteredClients.length; i++){
-          geolocation.push(await getGeolocationByAddress(filteredClients[i].address.street, filteredClients[i].address.number))
+          geolocation.push(await getGeolocation(filteredClients[i].address.street, filteredClients[i].address.number, filteredClients[i].address.city))
       }
       }
      
