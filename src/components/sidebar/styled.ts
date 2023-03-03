@@ -13,9 +13,15 @@ export const Portal = styled(Select.Portal)``
 
 export const Content = styled(Select.Content)``
 
+export const ScrollUpButton = styled(Select.ScrollUpButton)``
 
+export const Viewport = styled(Select.Viewport)``
 
+export const Group = styled(Select.Group)``
 
+export const Label = styled(Select.Label)``
+
+export const Item = styled(Select.Item)``
 
 // export const Nav = styled.nav`
 //     position: absolute;
