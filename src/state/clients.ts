@@ -34,26 +34,26 @@ export const clientGeolocation = selector<IGeolocation[]>({
             geolocation.push(await getGeolocation(client[i].address.street, client[i].address.number, client[i].address.city))
         }
 
-        return geolocation
-    }
+    return geolocation
+  }
 })
 
 export const filter = atom<ICondition[]>({
   key: 'filter',
   default: [{
-              name: Filters.EVERY
-            }]
+    name: Filters.EVERY
+  }]
 })
 
 export const filteredGeolocationClients = selector<IGeolocation[]>({
   key: 'filteredGeolocationClients',
-  get: async ({get}) => {
-      const client = get(clients)
-      const filters = get(filter)
+  get: async ({ get }) => {
+    const client = get(clients)
+    const filters = get(filter)
 
-      let geolocation : IGeolocation[] = []
+    let geolocation: IGeolocation[] = []
 
-      const filteredClients = client.filter(client => client.condition === filters)
+    const filteredClients = client.filter(client => client.condition === filters)
 
 
       if (filters[0].name === Filters.EVERY){
@@ -64,9 +64,8 @@ export const filteredGeolocationClients = selector<IGeolocation[]>({
         for(let i = 0; i < filteredClients.length; i++){
           geolocation.push(await getGeolocation(filteredClients[i].address.street, filteredClients[i].address.number, filteredClients[i].address.city))
       }
-      }
-     
 
-      return geolocation
+
+    return geolocation
   }
 })

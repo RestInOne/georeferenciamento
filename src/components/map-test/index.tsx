@@ -15,54 +15,54 @@ import { clientGeolocation } from '../../state/clients'
 
 const MapTest = () => {
 
-    const geolocations = useRecoilValue(clientGeolocation)
-    const mapRef = useRef<HTMLDivElement>(null);
+  const geolocations = useRecoilValue(clientGeolocation)
+  const mapRef = useRef<HTMLDivElement>();
 
-    useEffect(() => {
-          const iconStyle = new Style({
-            image: new Icon({
-              anchor: [0.5, 46],
-              anchorXUnits: 'fraction',
-              anchorYUnits: 'pixels',
-              src: 'https://openlayers.org/en/latest/examples/data/icon.png',
-            }),
-          });
-      
-          const pointFeatures : Feature<Point>[] = []
+  useEffect(() => {
+    const iconStyle = new Style({
+      image: new Icon({
+        anchor: [0.5, 46],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        src: '/assets/pointerPastelBlue.svg',
+      }),
+    });
 
-          for (let i = 0; i < geolocations.length; i++){
-            pointFeatures.push(new Feature({
-                geometry: new Point(fromLonLat([geolocations[i].lon, geolocations[i].lat])),
-              }))
-            }
-      
-          const vectorSource = new VectorSource({
-            features: [...pointFeatures],
-          });
-      
-          const vectorLayer = new VectorLayer({
-            source: vectorSource,
-            style: iconStyle,
-          });
-      
-          const map = new Map({
-            target: mapRef.current!,
-            layers: [
-              new TileLayer({
-                source: new OSM(),
-              }),
-              vectorLayer,
-            ],
-            view: new View({
-              center: fromLonLat([0, 0]),
-              zoom: 4,
-            }),
-          });
-      
-          return () => map.dispose();
-        }, geolocations);
+    const pointFeatures: Feature<Point>[] = []
 
-    return <S.MapContainer ref={mapRef}/>
+    for (let i = 0; i < geolocations.length; i++) {
+      pointFeatures.push(new Feature({
+        geometry: new Point(fromLonLat([geolocations[i].lon, geolocations[i].lat])),
+      }))
+    }
+
+    const vectorSource = new VectorSource({
+      features: [...pointFeatures],
+    });
+
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+      style: iconStyle,
+    });
+
+    const map = new Map({
+      target: mapRef.current!,
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+        vectorLayer,
+      ],
+      view: new View({
+        center: fromLonLat([0, 0]),
+        zoom: 4,
+      }),
+    });
+
+    return () => map.dispose();
+  }, geolocations);
+
+  return <S.MapContainer ref={mapRef} />
 }
 
 export default MapTest
