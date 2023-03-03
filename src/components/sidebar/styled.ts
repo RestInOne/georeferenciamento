@@ -1,16 +1,18 @@
 import styled from "styled-components";
 
 export const Nav = styled.nav`
-    position: fixed;
-    left: 0;
-    height: 100vh;
-    width: 40rem;
+    position: absolute;
+    top: 5rem;
+    left: 2rem;
+    height: 85vh;
+    width: max-content;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 3rem;
     padding: 3rem;
     flex-direction: column;
-    border-right: 3px solid black;
+    border-radius: .5rem;
+    border: .2rem solid black;
     z-index: 3;
     background-color: white;
 `
@@ -25,7 +27,7 @@ export const ConditionFilter = styled.select`
     border-bottom: 2px solid black;
     border-top-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    width: 30rem;
+    width: 25rem;
     border-left: none;
     border-right: none;
     font-size: 18px;
