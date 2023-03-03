@@ -30,13 +30,13 @@ export const clients = atom<IClient[]>({
 })
 
 export const clientGeolocation = selector<IGeolocation[]>({
-    key: 'clientGeolocation',
-    get: async ({get}) => {
-        const client = get(clients)
-        let geolocation : IGeolocation[] = []
-        for(let i = 0; i < client.length; i++){
-            geolocation.push(await getGeolocation(client[i].address.street, client[i].address.number, client[i].address.city))
-        }
+  key: 'clientGeolocation',
+  get: async ({ get }) => {
+    const client = get(clients)
+    let geolocation: IGeolocation[] = []
+    for (let i = 0; i < client.length; i++) {
+      geolocation.push(await getGeolocation(client[i].address.street, client[i].address.number, client[i].address.city))
+    }
 
     return geolocation
   }
@@ -58,7 +58,6 @@ export const filteredGeolocationClients = selector<IClient[]>({
     let filteredGeolocationClients : IClient[]
 
     const filteredClients = client.filter(client => client.condition === filters)
-
 
       if (filters[0].name === Filters.EVERY){
         for(let i = 0; i < client.length; i++){
