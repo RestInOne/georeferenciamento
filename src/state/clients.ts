@@ -64,7 +64,7 @@ export const filteredGeolocationClients = selector<IGeolocation[]>({
         for(let i = 0; i < filteredClients.length; i++){
           geolocation.push(await getGeolocation(filteredClients[i].address.street, filteredClients[i].address.number, filteredClients[i].address.city))
       }
-
+      }
 
     return geolocation
   }
