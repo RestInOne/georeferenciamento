@@ -13,9 +13,11 @@ import { useEffect, useRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { clientGeolocation } from '../../state/clients'
 import { IGeolocation } from '../../interfaces/geolocation'
+import { IClient } from '../../interfaces/client'
+import { getGeolocation } from '../../gateways/getGeolocation'
 
 interface IMapWithPins {
-  geolocations: IGeolocation[]
+  filteredClients: IClient[]
 } 
 
 const MapTest = (props: IMapWithPins) => {
@@ -35,10 +37,11 @@ const MapTest = (props: IMapWithPins) => {
 
     const pointFeatures: Feature<Point>[] = []
 
-    for (let i = 0; i < props.geolocations.length; i++) {
+    for (let i = 0; i < props.filteredClients.length; i++) {
       pointFeatures.push(new Feature({
-        geometry: new Point(fromLonLat([props.geolocations[i].lon, props.geolocations[i].lat])),
+        geometry: new Point(fromLonLat([props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat])),
       }))
+      pointFeatures[i].set('client', props.filteredClients[i])
     }
 
     const vectorSource = new VectorSource({
@@ -65,7 +68,7 @@ const MapTest = (props: IMapWithPins) => {
     });
 
     return () => map.dispose();
-  }, props.geolocations);
+  }, props.filteredClients);
 
   return <S.MapContainer ref={mapRef} />
 }
