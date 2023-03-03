@@ -12,10 +12,15 @@ import { Icon, Style } from 'ol/style';
 import { useEffect, useRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { clientGeolocation } from '../../state/clients'
+import { IGeolocation } from '../../interfaces/geolocation'
 
-const MapTest = () => {
+interface IMapWithPins {
+  geolocations: IGeolocation[]
+} 
 
-  const geolocations = useRecoilValue(clientGeolocation)
+const MapTest = (props: IMapWithPins) => {
+
+  
   const mapRef = useRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -30,9 +35,9 @@ const MapTest = () => {
 
     const pointFeatures: Feature<Point>[] = []
 
-    for (let i = 0; i < geolocations.length; i++) {
+    for (let i = 0; i < props.geolocations.length; i++) {
       pointFeatures.push(new Feature({
-        geometry: new Point(fromLonLat([geolocations[i].lon, geolocations[i].lat])),
+        geometry: new Point(fromLonLat([props.geolocations[i].lon, props.geolocations[i].lat])),
       }))
     }
 
@@ -60,7 +65,7 @@ const MapTest = () => {
     });
 
     return () => map.dispose();
-  }, geolocations);
+  }, props.geolocations);
 
   return <S.MapContainer ref={mapRef} />
 }

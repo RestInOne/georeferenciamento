@@ -10,26 +10,15 @@ export const getGeolocation : geolocationGateway = async (streetName: string, ad
     let street = streetName.replace(/ /g, '%20')
     let city = cityname.replace(/ /g, '%20')
 
-    let geolocation : IGeolocation
-    
-    let config = {
-        method: 'get',
-        url: `https://api.geoapify.com/v1/geocode/autocomplete?text=${number}%20${street}%20${city}&apiKey=${key}`,
-        headers: { }
-      };
-      axios(config)
-      .then(function (response) {
+    const geolocation : IGeolocation = {
+        lon: 0,
+        lat: 0
+    }
 
-        geolocation = {
-        lon : response.data.features[0].properties.lon,
-        lat : response.data.features[0].properties.lat
-        }
+        const response = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete?text=${number}%20${street}%20${city}&apiKey=${key}`)
 
-        console.log(response.data)
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+        geolocation.lon = response.data.features[0].properties.lon
+        geolocation.lat = response.data.features[0].properties.lat    
 
       return geolocation
 }
