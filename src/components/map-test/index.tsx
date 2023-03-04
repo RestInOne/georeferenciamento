@@ -3,55 +3,48 @@ import Map from 'ol/Map'
 import View from 'ol/View'
 import TileLayer from 'ol/layer/Tile'
 import { OSM } from 'ol/source'
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
 import { fromLonLat } from 'ol/proj';
+import { useEffect, useRef } from 'react'
+import { IClient } from '../../interfaces/client'
+import Feature from 'ol/Feature';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import { Icon, Style } from 'ol/style';
-import { useEffect, useRef } from 'react'
-import { useRecoilValue } from 'recoil'
-import { clientGeolocation } from '../../state/clients'
-import { IGeolocation } from '../../interfaces/geolocation'
-import { IClient } from '../../interfaces/client'
-import { getGeolocation } from '../../gateways/getGeolocation'
+import { createPointWithColor } from './createCircle'
+import { getColorByCondition } from '../../gateways/getColorByCondition'
 
 interface IMapWithPins {
   filteredClients: IClient[]
 } 
 
-const MapTest = (props: IMapWithPins) => {
-
+export default function MapTest(props: IMapWithPins) {
   
-  const mapRef = useRef<HTMLDivElement>();
+  const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const iconStyle = new Style({
-      image: new Icon({
-        anchor: [0.5, 46],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        src: '/assets/pointerPastelBlue.svg',
-      }),
-    });
 
-    const pointFeatures: Feature<Point>[] = []
+    const features : Feature[] = []
 
-    for (let i = 0; i < props.filteredClients.length; i++) {
-      pointFeatures.push(new Feature({
-        geometry: new Point(fromLonLat([props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat])),
-      }))
-      pointFeatures[i].set('client', props.filteredClients[i])
-    }
+    for (let i = 0; i < props.filteredClients.length; i ++){
+      let center : [number, number] = [props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat]
+      props.filteredClients[i].condition.forEach(condition => { 
+        features.push(
+        createPointWithColor(
+        center,
+        12,
+        getColorByCondition(condition.name),
+        props.filteredClients[i]
+      ))
+      })
+    } 
 
     const vectorSource = new VectorSource({
-      features: [...pointFeatures],
+      features: [...features],
+    });
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,   
     });
 
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,
-      style: iconStyle,
-    });
+
 
     const map = new Map({
       target: mapRef.current!,
@@ -59,7 +52,7 @@ const MapTest = (props: IMapWithPins) => {
         new TileLayer({
           source: new OSM(),
         }),
-        vectorLayer,
+        vectorLayer
       ],
       view: new View({
         center: fromLonLat([0, 0]),
@@ -67,10 +60,12 @@ const MapTest = (props: IMapWithPins) => {
       }),
     });
 
-    return () => map.dispose();
+    return () => { 
+      
+      map.setTarget(null)
+    }
   }, props.filteredClients);
+  
 
   return <S.MapContainer ref={mapRef} />
 }
-
-export default MapTest
