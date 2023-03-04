@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './styled'
 import { filter } from '../../state/clients'
 import { useSetRecoilState } from 'recoil'
@@ -16,54 +16,145 @@ function capitalizeWord(str: string) {
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState(["todos"]);
 
   const setFilters = useSetRecoilState(filter);
 
-  const conditions: string[] = [
-    'todos5',
-    'resistencia_insulina_leve',
-    'resistência_Insulina_Moderada',
-    'resistência_Insulina_Severo5',
-    'diabético',
-    'risco_amputação_leve',
-    'risco_moderado',
-    'risco_severo5',
-    'doente_metabólico_severo5',
-    'hipertenso_leve',
-    'hipertenso_moderado',
-    'hipertenso_severo',
-    'risco_pico_hipertensivo',
-    'risco_infarto_e_AVC',
-    'risco_evento_cardíaco_grave5',
-    'sobrepeso',
-    'obesidade_1',
-    'obesidade_2',
-    'obesidade_35',
-    'stress_elevado',
-    'stress_severo5',
-    'síndrome_vagal5',
-    'TDAH5',
-    'depressão_leve_ou_moderada',
-    'depressão_severa'
+  const conditions = [
+    {
+      name: 'todos5',
+      checked: true,
+    },
+    {
+      name: 'resistencia_insulina_leve',
+      checked: false,
+    },
+    {
+      name: 'resistência_Insulina_Moderada',
+      checked: false,
+    },
+    {
+      name: 'resistência_Insulina_Severo5',
+      checked: false,
+    },
+    {
+      name: 'diabético',
+      checked: false,
+    },
+    {
+      name: 'risco_amputação_leve',
+      checked: false,
+    },
+    {
+      name: 'risco_moderado',
+      checked: false,
+    },
+    {
+      name: 'risco_severo5',
+      checked: false,
+    },
+    {
+      name: 'doente_metabólico_severo5',
+      checked: false,
+    },
+    {
+      name: 'hipertenso_leve',
+      checked: false,
+    },
+    {
+      name: 'hipertenso_moderado',
+      checked: false,
+    },
+    {
+      name: 'hipertenso_severo',
+      checked: false,
+    },
+    {
+      name: 'risco_pico_hipertensivo',
+      checked: false,
+    },
+    {
+      name: 'risco_infarto_e_AVC',
+      checked: false,
+    },
+    {
+      name: 'risco_evento_cardíaco_grave5',
+      checked: false,
+    },
+    {
+      name: 'sobrepeso',
+      checked: false,
+    },
+    {
+      name: 'obesidade_1',
+      checked: false,
+    },
+    {
+      name: 'obesidade_2',
+      checked: false,
+    },
+    {
+      name: 'obesidade_35',
+      checked: false,
+    },
+    {
+      name: 'stress_elevado',
+      checked: false,
+    },
+    {
+      name: 'stress_severo5',
+      checked: false,
+    },
+    {
+      name: 'síndrome_vagal5',
+      checked: false,
+    },
+    {
+      name: 'TDAH5',
+      checked: false,
+    },
+    {
+      name: 'depressão_leve_ou_moderada',
+      checked: false,
+    },
+    {
+      name: 'depressão_severa',
+      checked: false,
+    }
   ]
 
-  const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: string) => {
+  const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
     const isChecked = event.target.checked;
-
+    condition.checked = isChecked;
+    
     let newSelectedValues = [];
 
-    if(isChecked) {
-      if(!selectedValues.includes(condition)) {
-        newSelectedValues = [...selectedValues, condition.replace('5', '')]
-      } 
+    if(condition.checked) {
+      // const all = conditions.filter(value => value.name === 'todos');
+      // const allNameAndChecked = all.at(0);
+      
+      // if(condition.name !== allNameAndChecked.name && condition.checked) {
+      //   return allNameAndChecked.checked = false
+      // }
+
+      // if(condition.name !== allNameAndChecked.name && !condition.checked === false) {
+      //   return allNameAndChecked.checked = true
+      // }
+
+      // conditions[0].checked = allNameAndChecked.checked
+
+
+      newSelectedValues = [...selectedValues, condition.name]
     } else {
-      newSelectedValues = selectedValues.filter(selectedValue => selectedValue !== condition)
+      newSelectedValues = selectedValues.filter(value => value !== condition.name)
     }
 
-    setSelectedValues(newSelectedValues);
+    setSelectedValues(newSelectedValues)
+    setFilters(selectedValues.map(value => ({ name: value })))
   }
 
+  console.log(selectedValues)
+  
   return (
     <S.Wrapper>
       <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
@@ -77,14 +168,15 @@ export function Sidebar() {
             <S.Container>
               {
                 conditions.map((condition, index, conditionArray) => {
+                  condition.name = condition.name.replace('5', '')
 
                   return (
                     <>
                       <S.Flex>
-                        <S.Checkbox type="checkbox" name={condition} onChange={(event) => handleChecked(event, condition)} />
-                        <S.Label>{capitalizeWord(condition.replace(/_/g, ' ').replace('5', ''))}</S.Label>
+                        <S.Checkbox type="checkbox" name={condition.name} defaultChecked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
+                        <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
                       </S.Flex>
-                      {conditionArray[index].endsWith("5") ? (<S.Separator />) : (<></>)}
+                      {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}
                     </>
                   )
                 })

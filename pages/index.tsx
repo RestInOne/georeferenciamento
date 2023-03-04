@@ -53,9 +53,9 @@ export const getServerSideProps : GetServerSideProps = async () => {
 
 export default function Index({ propClients } : InferGetServerSidePropsType<typeof getServerSideProps>) {
 
-  //console.log(propClients)
-  //const setClients = useSetRecoilState(clients)
- // setClients(propClients)
+  // console.log(propClients)
+  // const setClients = useSetRecoilState(clients)
+  // setClients(propClients)
 
   return (
     <>
