@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-// import { Checkbox } from "@radix-ui/react-checkbox";
 import * as Selector from "@radix-ui/react-separator";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";

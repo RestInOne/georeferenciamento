@@ -12,7 +12,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { createPointWithColor } from './createCircle'
 import { getColorByCondition } from '../../gateways/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
-import { makeStyles, Modal } from '@mui/material'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { clientOnModal, modalIsActive } from '../../state/modal'
 

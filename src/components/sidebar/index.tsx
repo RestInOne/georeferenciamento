@@ -20,7 +20,7 @@ export function Sidebar() {
 
   const setFilters = useSetRecoilState(filter);
 
-  const conditions = [
+  const [conditions, setConditions] = useState([
     {
       name: 'todos5',
       checked: true,
@@ -121,7 +121,7 @@ export function Sidebar() {
       name: 'depressão_severa',
       checked: false,
     }
-  ]
+  ])
 
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
     const isChecked = event.target.checked;
@@ -130,19 +130,31 @@ export function Sidebar() {
     let newSelectedValues = [];
 
     if(condition.checked) {
-      // const all = conditions.filter(value => value.name === 'todos');
-      // const allNameAndChecked = all.at(0);
+      const all = conditions.filter(value => value.name === 'todos');
+      const allNameAndChecked = all.at(0);
+
+      console.log(allNameAndChecked)
       
-      // if(condition.name !== allNameAndChecked.name && condition.checked) {
-      //   return allNameAndChecked.checked = false
-      // }
+      if(condition.name !== allNameAndChecked.name && condition.checked) {
+        allNameAndChecked.checked = false
+       }
+      else if(condition.name !== allNameAndChecked.name && !condition.checked) {
+        allNameAndChecked.checked = true
+      }
 
-      // if(condition.name !== allNameAndChecked.name && !condition.checked === false) {
-      //   return allNameAndChecked.checked = true
-      // }
+      let newConditions = conditions.slice(1)
 
-      // conditions[0].checked = allNameAndChecked.checked
+      if (condition.name === allNameAndChecked.name){
+        newConditions.forEach((condition) => condition.checked = false)
+      }
 
+      setConditions([{
+        name: allNameAndChecked.name,
+        checked: allNameAndChecked.checked
+      }, ...newConditions])
+
+
+      console.log(conditions)
 
       newSelectedValues = [...selectedValues, condition.name]
     } else {
@@ -151,9 +163,8 @@ export function Sidebar() {
 
     setSelectedValues(newSelectedValues)
     setFilters(selectedValues.map(value => ({ name: value })))
-  }
 
-  console.log(selectedValues)
+  }
   
   return (
     <S.Wrapper>
@@ -172,8 +183,8 @@ export function Sidebar() {
 
                   return (
                     <>
-                      <S.Flex>
-                        <S.Checkbox type="checkbox" name={condition.name} defaultChecked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
+                      <S.Flex key={index}>
+                        <S.Checkbox type="checkbox" name={condition.name} checked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
                         <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
                       </S.Flex>
                       {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}

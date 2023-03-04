@@ -13,7 +13,6 @@ interface IMapWithPins {
 
 export default function Home(props: IMapWithPins){
 
-    //const filteredClients = useRecoilValue(filteredGeolocationClients)
     const isVisible = useRecoilValue(modalIsActive)
 
     return (
