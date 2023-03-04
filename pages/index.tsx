@@ -17,14 +17,14 @@ export const getServerSideProps : GetServerSideProps = async () => {
       bornYear: 2005,
       age: 17,
       condition:[ {
-        name: Filters.ADHD,
+        name: Filters.OVERWEIGHT,
       }],
       address: {
         street: "Rua Francisco Rodrigues Seckler",
         number: 111,
         city: "São Paulo"
       },
-      geolocation: await getGeolocation( "Rua Francisco Rodrigues Seckler", 111,  "São Paulo")
+      geolocation: await getGeolocation("Rua Francisco Rodrigues Seckler", 111,  "São Paulo")
     },
     {
       id: "4347676724",

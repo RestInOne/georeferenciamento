@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mui/material": "^5.11.11",
     "@radix-ui/react-icons": "^1.2.0",
     "@radix-ui/react-select": "^1.2.0",
     "@types/dotenv": "^8.2.0",
