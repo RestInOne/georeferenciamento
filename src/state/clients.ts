@@ -12,9 +12,7 @@ export const clients = atom<IClient[]>({
 
 export const filter = atom<ICondition[]>({
   key: 'filter',
-  default: [{
-    name: Filters.EVERY
-  }]
+  default: [{ name: Filters.EVERY }]
 })
 
 export const filteredGeolocationClients = selector<IClient[]>({

@@ -1,124 +1,168 @@
-import styled from "styled-components";
-import * as Select from '@radix-ui/react-select'
-import { ChevronDownIcon, ChevronUpIcon, CheckIcon } from '@radix-ui/react-icons'
+import styled, { css } from "styled-components";
+// import { Checkbox } from "@radix-ui/react-checkbox";
+import * as Selector from "@radix-ui/react-separator";
+import * as ScrollArea from '@radix-ui/react-scroll-area';
+import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
-
-export const IconUp = styled(ChevronUpIcon)`
-    width: 3.5rem;
-    height: 3.5rem;
+export const Wrapper = styled.div`
+    display: flex;
+    overflow: hidden;
 `
 
-export const IconDown = styled(ChevronDownIcon)`
-    width: 3.5rem;
-    height: 3.5rem;
+export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
+    position: absolute;
+    top: 3rem;
+    right: 2rem;
+    background-color: #B8B5B0;
+    padding: 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 11;
+
+    transition: all .3s ease-in-out;
+
+    &:hover {
+        background-color: #DEDBD5;
+    }
+
+    ${props => props.isOpen ? 
+    css`
+        transform: rotate(-180deg);
+        right: 38rem;
+    `
+    :
+    css`
+        transform: rotate(180deg);
+    `
+    }
+`
+
+export const ArrowLeft = styled(ArrowLeftIcon)`
+    width: 2rem;
+    height: 2rem;
+`
+
+export const ArrowRight = styled(ArrowRightIcon)`
+    width: 2rem;
+    height: 2rem;
 `
 
 export const IconCheck = styled(CheckIcon)`
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 2rem;
+    height: 2rem;
 `
 
-export const Root = styled(Select.Root)``
+export const Separator = styled(Selector.Root)`
+    background-color: #383736;
+    margin: .5rem 0;
 
-export const Trigger = styled(Select.SelectTrigger)`
-    all: 'unset';
-    gap: 1rem;
-    border-radius: .4rem;
-    padding: 1rem 3.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFFDF7;
-    color: #73726F;
+    &[data-orientation=horizontal]{
+        height: .1rem;
+        width: 100%;
+    }
+`
+
+export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     position: absolute;
     top: 2rem;
-    left: 2rem;
-    z-index: 3;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #DEDBD5;
+    align-items: center;
+    width: 35rem;
+    height: max-content;
     font-size: 1.5rem;
-    box-shadow: 0 .2rem 1rem gray;
-    cursor: pointer;
+    z-index: 5;
+    box-shadow: 6px 10px 16px -3px rgba(0,0,0,0.75);
+    border-radius: .8rem;
+    padding: 1.5rem;
+    border: .1rem solid #d4d4d4;
+    transform: translateX(100%);
 
-    transition: all .2s ease-in-out;
+    ${props => props.openOrCloseSide ? css`
+    transform: translateX(0);
+    ` : ''  
+    };
     
-    &:hover {
-        background-color: #ECE8EF;
-    }
+    transition: transform .3s ease-in-out;
 `
 
-export const SelectIcon = styled(Select.SelectIcon)`
-    color: #73726F;
-`
-
-export const Value = styled(Select.Value)``
-
-export const Portal = styled(Select.Portal)`
-    font-size: 1.5rem;
-    background-color: #FFFDF7;
-    z-index: 4;
-`
-
-export const Content = styled(Select.Content)``
-
-export const Viewport = styled(Select.Viewport)``
-
-export const Group = styled(Select.Group)`
+export const Label = styled.label`
+    color: #383736;
+    font-size: 1.7rem;
     padding: 1rem;
-    `
+`
 
-export const Label = styled(Select.Label)``
+export const LabelTitle = styled(Label)`
+    font-weight: 600;
+`
 
-export const Item = styled(Select.Item)`
-display: flex;
-    justify-content: center;
+export const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    gap: .1rem;
+`
+
+export const Flex = styled.div`
+    display: flex;
     align-items: center;
+`
+
+export const Checkbox = styled.input`
+    all: 'unset';
+    background-color: #F8F5EE;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: .4rem;
+    display: block;
+    box-shadow: 0 .2rem 1rem #383736;
     cursor: pointer;
+
     transition: all .2s ease-in-out;
+
+    &:hover {
+        background-color: #B8B5B0;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 .2rem #000000;
+    }
+`
+
+export const ScrollRoot = styled(ScrollArea.Root)`
+    width: 31rem;
+    height: 60.5rem;
+    overflow: hidden;
+`
+
+export const ScrollView = styled(ScrollArea.Viewport)`
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    gap: 2rem;
+`
+
+export const ScrollBar = styled(ScrollArea.Scrollbar)`
+    display: flex;
+    user-select: none;
+    touch-action: none;
+    padding: .2rem;
+    flex-direction: column;
+    background-color: #B8B5B0;
+    border-radius: .8rem;
     
     &:hover {
-        background-color: #ECE8EF;
+    }
+
+    &[data-orientation='vertical'] {
+        width: 1rem;
     }
 `
 
-export const ItemText = styled(Select.ItemText)``
-
-export const ScrollUpButton = styled(Select.ScrollUpButton)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: max-content;
-    padding: 1rem 0;
-    background-color: #FFFDF7;
-    color: #73726F;
-    cursor: pointer;
-
-    transition: all .2s ease-in-out;
-
-    &:hover {
-        background-color: #ECE8EF;
-    }
-`
-
-export const ScrollDownButton = styled(Select.ScrollDownButton)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: max-content;
-    padding: 1rem 0;
-    background-color: #FFFDF7;
-    color: #73726F;
-    cursor: pointer;
-
-    transition: all .2s ease-in-out;
-
-
-    &:hover {
-        background-color: #ECE8EF;
-    }
-`
-
-export const ItemIndicator = styled(Select.ItemIndicator)`
-    width: 2.5rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+export const ScrollThumb = styled(ScrollArea.Thumb)`
+    flex: 1;
+    background-color: #d4d4d4;
+    border-radius: .8rem;
 `
