@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 // import { Checkbox } from "@radix-ui/react-checkbox";
-import * as Selector from "@radix-ui/react-separator"
+import * as Selector from "@radix-ui/react-separator";
+import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
 export const Wrapper = styled.div`
@@ -130,30 +131,38 @@ export const Checkbox = styled.input`
     }
 `
 
-// export const CheckBoxRoot = styled(Checkbox)`
-    // all: 'unset';
-    // background-color: #F8F5EE;
-    // width: 2.5rem;
-    // height: 2.5rem;
-    // border-radius: .4rem;
-    // display: block;
-    // box-shadow: 0 .2rem 1rem #383736;
-    // cursor: pointer;
+export const ScrollRoot = styled(ScrollArea.Root)`
+    width: 31rem;
+    height: 60.5rem;
+    overflow: hidden;
+`
 
-    // transition: all .2s ease-in-out;
+export const ScrollView = styled(ScrollArea.Viewport)`
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    gap: 2rem;
+`
 
-    // &:hover {
-    //     background-color: #B8B5B0;
-    // }
+export const ScrollBar = styled(ScrollArea.Scrollbar)`
+    display: flex;
+    user-select: none;
+    touch-action: none;
+    padding: .2rem;
+    flex-direction: column;
+    background-color: #B8B5B0;
+    border-radius: .8rem;
+    
+    &:hover {
+    }
 
-    // &:focus {
-    //     box-shadow: 0 0 0 .2rem #000000;
-    // }
-// `
+    &[data-orientation='vertical'] {
+        width: 1rem;
+    }
+`
 
-// export const CheckBoxIndicator = styled(Checkbox)`
-//     color: #383736;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-// `
+export const ScrollThumb = styled(ScrollArea.Thumb)`
+    flex: 1;
+    background-color: #d4d4d4;
+    border-radius: .8rem;
+`

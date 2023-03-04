@@ -8,6 +8,7 @@
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.2",
     "@radix-ui/react-icons": "^1.2.0",
+    "@radix-ui/react-scroll-area": "^1.0.2",
     "@radix-ui/react-separator": "^1.0.1",
     "@types/dotenv": "^8.2.0",
     "@types/openlayers": "^4.6.18",
