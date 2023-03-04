@@ -1,20 +1,49 @@
 import styled, { css } from "styled-components";
-import * as Checkbox from "@radix-ui/react-checkbox";
+// import { Checkbox } from "@radix-ui/react-checkbox";
 import * as Selector from "@radix-ui/react-separator"
-import { CheckIcon, ArrowLeftIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
 export const Wrapper = styled.div`
     display: flex;
+    overflow: hidden;
 `
 
-export const ButtonOpenOrCloseSidebar = styled.div`
-   
+export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
+    position: absolute;
+    top: 3rem;
+    right: 2rem;
+    background-color: #B8B5B0;
+    padding: 1.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 11;
+
+    transition: all .3s ease-in-out;
+
+    &:hover {
+        background-color: #DEDBD5;
+    }
+
+    ${props => props.isOpen ? 
+    css`
+        transform: rotate(-180deg);
+        right: 38rem;
+    `
+    :
+    css`
+        transform: rotate(180deg);
+    `
+    }
 `
 
 export const ArrowLeft = styled(ArrowLeftIcon)`
     width: 2rem;
     height: 2rem;
-    
+`
+
+export const ArrowRight = styled(ArrowRightIcon)`
+    width: 2rem;
+    height: 2rem;
 `
 
 export const IconCheck = styled(CheckIcon)`
@@ -33,15 +62,14 @@ export const Separator = styled(Selector.Root)`
 `
 
 export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
-    margin-left: auto;
-    position: fixed;
+    position: absolute;
     top: 2rem;
-    right: 2rem;
-    display: none;
+    right: 0;
+    display: flex;
     flex-direction: column;
     background-color: #DEDBD5;
     align-items: center;
-    width: max-content;
+    width: 35rem;
     height: max-content;
     font-size: 1.5rem;
     z-index: 5;
@@ -49,14 +77,14 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     border-radius: .8rem;
     padding: 1.5rem;
     border: .1rem solid #d4d4d4;
-
-    transition: transform .3s ease-in-out
+    transform: translateX(100%);
 
     ${props => props.openOrCloseSide ? css`
-        transform: translateX(1%);
-    ` : css`
-        transform: translateX(100%);
-    `}
+    transform: translateX(0);
+    ` : ''  
+    };
+    
+    transition: transform .3s ease-in-out;
 `
 
 export const Label = styled.label`
@@ -81,7 +109,7 @@ export const Flex = styled.div`
     align-items: center;
 `
 
-export const CheckBoxRoot = styled(Checkbox.Root)`
+export const Checkbox = styled.input`
     all: 'unset';
     background-color: #F8F5EE;
     width: 2.5rem;
@@ -102,6 +130,30 @@ export const CheckBoxRoot = styled(Checkbox.Root)`
     }
 `
 
-export const CheckBoxIndicator = styled(Checkbox.Indicator)`
-    color: #383736;
-`
+// export const CheckBoxRoot = styled(Checkbox)`
+    // all: 'unset';
+    // background-color: #F8F5EE;
+    // width: 2.5rem;
+    // height: 2.5rem;
+    // border-radius: .4rem;
+    // display: block;
+    // box-shadow: 0 .2rem 1rem #383736;
+    // cursor: pointer;
+
+    // transition: all .2s ease-in-out;
+
+    // &:hover {
+    //     background-color: #B8B5B0;
+    // }
+
+    // &:focus {
+    //     box-shadow: 0 0 0 .2rem #000000;
+    // }
+// `
+
+// export const CheckBoxIndicator = styled(Checkbox)`
+//     color: #383736;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+// `

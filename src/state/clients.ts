@@ -41,7 +41,7 @@ export const clientGeolocation = selector<IGeolocation[]>({
 export const filter = atom<ICondition[]>({
   key: 'filter',
   default: [{
-    name: Filters.EVERY
+    name: Filters.EVERY,
   }]
 })
 
