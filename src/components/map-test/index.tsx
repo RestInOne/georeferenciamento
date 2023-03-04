@@ -3,47 +3,54 @@ import Map from 'ol/Map'
 import View from 'ol/View'
 import TileLayer from 'ol/layer/Tile'
 import { OSM } from 'ol/source'
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
 import { fromLonLat } from 'ol/proj';
+import { useEffect, useRef, useState } from 'react'
+import { IClient } from '../../interfaces/client'
+import Feature from 'ol/Feature';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
-import { Icon, Style } from 'ol/style';
-import { useEffect, useRef } from 'react'
-import { useRecoilValue } from 'recoil'
-import { clientGeolocation } from '../../state/clients'
+import { createPointWithColor } from './createCircle'
+import { getColorByCondition } from '../../gateways/getColorByCondition'
+import { MapBrowserEvent } from 'ol'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { clientOnModal, modalIsActive } from '../../state/modal'
 
-const MapTest = () => {
+interface IMapWithPins {
+  filteredClients: IClient[]
+} 
 
-  const geolocations = useRecoilValue(clientGeolocation)
-  const mapRef = useRef<HTMLDivElement>();
+export default function MapTest(props: IMapWithPins) {
+  
+  const mapRef = useRef<HTMLDivElement>(null);
+  const setClientOn = useSetRecoilState(clientOnModal)
+  const setModal = useSetRecoilState(modalIsActive)
+
 
   useEffect(() => {
-    const iconStyle = new Style({
-      image: new Icon({
-        anchor: [0.5, 46],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        src: '/assets/pointerPastelBlue.svg',
-      }),
-    });
 
-    const pointFeatures: Feature<Point>[] = []
+    const features : Feature[] = []
 
-    for (let i = 0; i < geolocations.length; i++) {
-      pointFeatures.push(new Feature({
-        geometry: new Point(fromLonLat([geolocations[i].lon, geolocations[i].lat])),
-      }))
-    }
+    for (let i = 0; i < props.filteredClients.length; i ++){
+      let center : [number, number] = [props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat]
+      props.filteredClients[i].condition.forEach(condition => { 
+        features.push(
+        createPointWithColor(
+        center,
+        12,
+        getColorByCondition(condition.name),
+        props.filteredClients[i]
+      ))
+      })
+    } 
 
     const vectorSource = new VectorSource({
-      features: [...pointFeatures],
+      features: [...features],
+    });
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,   
     });
 
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,
-      style: iconStyle,
-    });
+
 
     const map = new Map({
       target: mapRef.current!,
@@ -51,7 +58,7 @@ const MapTest = () => {
         new TileLayer({
           source: new OSM(),
         }),
-        vectorLayer,
+        vectorLayer
       ],
       view: new View({
         center: fromLonLat([0, 0]),
@@ -59,10 +66,25 @@ const MapTest = () => {
       }),
     });
 
-    return () => map.dispose();
-  }, geolocations);
+    map.addEventListener('click', (evt: MapBrowserEvent<any>) => {
+
+     if (evt.map.hasFeatureAtPixel(evt.pixel)){
+      const [feature] = evt.map.getFeaturesAtPixel(evt.pixel)
+      const client = feature.get('client')
+      setClientOn(client)
+      setModal(true)      
+     } else {
+      setModal(false)
+     }
+    })
+
+    return () => { 
+      
+      map.setTarget(null)
+    }
+  }, props.filteredClients);
+  
 
   return <S.MapContainer ref={mapRef} />
+ 
 }
-
-export default MapTest

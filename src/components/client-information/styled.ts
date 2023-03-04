@@ -8,14 +8,17 @@ export const Wrapper = styled.div`
     overflow: hidden;
 `
 
+
+
 export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     position: absolute;
     top: 3rem;
-    right: 2rem;
+    left: 2rem;
     background-color: #B8B5B0;
+    width: 12rem;
     padding: 1.5rem;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 0.8rem;
     z-index: 11;
 
     transition: all .3s ease-in-out;
@@ -27,7 +30,7 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     ${props => props.isOpen ? 
     css`
         transform: rotate(-180deg);
-        right: 38rem;
+        left: 38rem;
     `
     :
     css`
@@ -36,35 +39,10 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     }
 `
 
-export const ArrowLeft = styled(ArrowLeftIcon)`
-    width: 2rem;
-    height: 2rem;
-`
-
-export const ArrowRight = styled(ArrowRightIcon)`
-    width: 2rem;
-    height: 2rem;
-`
-
-export const IconCheck = styled(CheckIcon)`
-    width: 2rem;
-    height: 2rem;
-`
-
-export const Separator = styled(Selector.Root)`
-    background-color: #383736;
-    margin: .5rem 0;
-
-    &[data-orientation=horizontal]{
-        height: .1rem;
-        width: 100%;
-    }
-`
-
 export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     position: absolute;
-    top: 2rem;
-    right: 0;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
     background-color: #DEDBD5;
@@ -77,7 +55,7 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     border-radius: .8rem;
     padding: 1.5rem;
     border: .1rem solid #d4d4d4;
-    transform: translateX(100%);
+    transform: translateX(-95%);
 
     ${props => props.openOrCloseSide ? css`
     transform: translateX(0);
@@ -85,49 +63,6 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     };
     
     transition: transform .3s ease-in-out;
-`
-
-export const Label = styled.label`
-    color: #383736;
-    font-size: 1.7rem;
-    padding: 1rem;
-`
-
-export const LabelTitle = styled(Label)`
-    font-weight: 600;
-`
-
-export const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: max-content;
-    gap: .1rem;
-`
-
-export const Flex = styled.div`
-    display: flex;
-    align-items: center;
-`
-
-export const Checkbox = styled.input`
-    all: 'unset';
-    background-color: #F8F5EE;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: .4rem;
-    display: block;
-    box-shadow: 0 .2rem 1rem #383736;
-    cursor: pointer;
-
-    transition: all .2s ease-in-out;
-
-    &:hover {
-        background-color: #B8B5B0;
-    }
-
-    &:focus {
-        box-shadow: 0 0 0 .2rem #000000;
-    }
 `
 
 export const ScrollRoot = styled(ScrollArea.Root)`
@@ -164,4 +99,16 @@ export const ScrollThumb = styled(ScrollArea.Thumb)`
     flex: 1;
     background-color: #d4d4d4;
     border-radius: .8rem;
+`
+
+
+
+export const ArrowLeft = styled(ArrowLeftIcon)`
+    width: 2rem;
+    height: 2rem;
+`
+
+export const ArrowRight = styled(ArrowRightIcon)`
+    width: 2rem;
+    height: 2rem;
 `
