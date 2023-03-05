@@ -14,11 +14,16 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     right: 2rem;
     background-color: #B8B5B0;
     padding: 1.5rem;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 1rem;
     cursor: pointer;
-    border-radius: 50%;
+    width: max-content;
+    border-radius: 0.8rem;
     z-index: 11;
 
-    transition: all .3s ease-in-out;
+    transition: all .4s ease-in-out;
 
     &:hover {
         background-color: #DEDBD5;
@@ -34,6 +39,12 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
         transform: rotate(180deg);
     `
     }
+`
+
+export const LabelFilter = styled.p`
+    font-size: 1.3rem;
+    font-weight: 600;
+    transform: rotate(180deg);
 `
 
 export const ArrowLeft = styled(ArrowLeftIcon)`
@@ -84,7 +95,7 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     ` : ''  
     };
     
-    transition: transform .3s ease-in-out;
+    transition: transform .4s ease-in-out;
 `
 
 export const Label = styled.label`

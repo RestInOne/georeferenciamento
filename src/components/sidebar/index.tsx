@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as S from './styled'
 import { filter } from '../../atom/clients'
 import { useRecoilState, useSetRecoilState } from 'recoil'
@@ -123,10 +123,10 @@ export function Sidebar() {
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
     const isChecked = event.target.checked;
     condition.checked = isChecked;
+    const all = conditions.filter(value => value.name === 'todos');
+    const allNameAndChecked = all.at(0);
 
     if(condition.checked) {
-      const all = conditions.filter(value => value.name === 'todos');
-      const allNameAndChecked = all.at(0);
       
       if(condition.name !== allNameAndChecked.name && condition.checked) {
         allNameAndChecked.checked = false
@@ -144,21 +144,44 @@ export function Sidebar() {
         checked: allNameAndChecked.checked
       }, ...newConditions])
 
-      setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
-        return {name: name}
-      }))
-    } 
+    } else {
+      const conditionsFalse = conditions.filter(value => value.name === condition.name && condition.checked === false)
+      const justCondition = conditionsFalse.at(0)
+      console.log(conditionsFalse)
+      console.log(justCondition)
 
-    setTimeout(() => {
-      console.log(filters)
-    }, 3000)
+      let newConditionsChange = conditions.slice(1)
+      
+      const everyConditionsCheckedFalse = newConditionsChange.every(value => value.checked === false)
 
+      if(condition.name !== allNameAndChecked.name && everyConditionsCheckedFalse) {
+        allNameAndChecked.checked = true
+      }
+
+      newConditionsChange.forEach(condition => condition.name === justCondition.name ? condition.checked = justCondition.checked : condition.checked)
+
+      setConditions([{
+        name: allNameAndChecked.name,
+        checked: allNameAndChecked.checked
+      },...newConditionsChange])
+    }
+    
+    setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
+      return {name: name}
+    }))
+
+    console.log(filters)
   }
   
   return (
     <S.Wrapper>
       <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
-        {isOpened ? (<S.ArrowLeft />) : (<S.ArrowRight />)}
+        {isOpened ? (<S.ArrowLeft />) : (
+        <>
+          <S.ArrowRight />
+          <S.LabelFilter>Abrir o Filtro</S.LabelFilter>
+        </>
+        )}
       </S.ButtonOpenOrCloseSidebar>
 
       <S.WrapperConditions openOrCloseSide={isOpened}>

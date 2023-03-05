@@ -8,8 +8,6 @@ export const Wrapper = styled.div`
     overflow: hidden;
 `
 
-
-
 export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     position: absolute;
     top: 3rem;

@@ -60,6 +60,22 @@ export const getServerSideProps : GetServerSideProps = async () => {
         city: "São Paulo"
       },
       geolocation: await getGeolocation("Rua Victorio Santim", 3086,  "São Paulo")
+    },
+    {
+      id: "5654553112",
+      name: "Julio Ruan",
+      cpf: "788956321245",
+      bornYear: 2000,
+      age: 23,
+      condition:[{
+        name: Filters.ADHD,
+      }],
+      address: {
+        street: "Rua Virginia Ferni",
+        number: 400,
+        city: "São Paulo"
+      },
+      geolocation: await getGeolocation("Rua Virginia Ferni", 400,  "São Paulo")
     }
   ]
 
