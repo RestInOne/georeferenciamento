@@ -12,7 +12,7 @@ const theme: DefaultTheme = {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+
     <RecoilRoot>
     <GlobalStyle/>
       <ThemeProvider theme={theme}>
@@ -20,6 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </ThemeProvider>
     </RecoilRoot>
-    </>
+    
   )
 }

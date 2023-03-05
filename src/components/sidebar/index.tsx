@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as S from './styled'
-import { filter } from '../../state/clients'
-import { useSetRecoilState } from 'recoil'
+import { filter } from '../../atom/clients'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
 function capitalizeWord(str: string) {
   const words = str.split(' ');
@@ -16,10 +16,7 @@ function capitalizeWord(str: string) {
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [selectedValues, setSelectedValues] = useState(["todos"]);
-
-  const setFilters = useSetRecoilState(filter);
-
+  const [filters, setFilters] = useRecoilState(filter);
   const [conditions, setConditions] = useState([
     {
       name: 'todos5',
@@ -126,26 +123,20 @@ export function Sidebar() {
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
     const isChecked = event.target.checked;
     condition.checked = isChecked;
-    
-    let newSelectedValues = [];
+    const all = conditions.filter(value => value.name === 'todos');
+    const allNameAndChecked = all.at(0);
 
     if(condition.checked) {
-      const all = conditions.filter(value => value.name === 'todos');
-      const allNameAndChecked = all.at(0);
-
-      console.log(allNameAndChecked)
       
       if(condition.name !== allNameAndChecked.name && condition.checked) {
         allNameAndChecked.checked = false
-       }
-      else if(condition.name !== allNameAndChecked.name && !condition.checked) {
-        allNameAndChecked.checked = true
       }
 
       let newConditions = conditions.slice(1)
 
       if (condition.name === allNameAndChecked.name){
         newConditions.forEach((condition) => condition.checked = false)
+        allNameAndChecked.checked = true
       }
 
       setConditions([{
@@ -153,23 +144,41 @@ export function Sidebar() {
         checked: allNameAndChecked.checked
       }, ...newConditions])
 
-
-      console.log(conditions)
-
-      newSelectedValues = [...selectedValues, condition.name]
     } else {
-      newSelectedValues = selectedValues.filter(value => value !== condition.name)
+      const conditionsFalse = conditions.filter(value => value.name === condition.name && condition.checked === false)
+      const justCondition = conditionsFalse.at(0)
+
+      let newConditionsChange = conditions.slice(1)
+      
+      const everyConditionsCheckedFalse = newConditionsChange.every(value => value.checked === false)
+
+      if(condition.name !== allNameAndChecked.name && everyConditionsCheckedFalse) {
+        allNameAndChecked.checked = true
+      }
+
+      newConditionsChange.forEach(condition => condition.name === justCondition.name ? condition.checked = justCondition.checked : condition.checked)
+
+      setConditions([{
+        name: allNameAndChecked.name,
+        checked: allNameAndChecked.checked
+      },...newConditionsChange])
     }
-
-    setSelectedValues(newSelectedValues)
-    setFilters(selectedValues.map(value => ({ name: value })))
-
+    
+    setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
+      // console.log(name)
+      return {name: name}
+    }))
   }
   
   return (
     <S.Wrapper>
       <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
-        {isOpened ? (<S.ArrowLeft />) : (<S.ArrowRight />)}
+        {isOpened ? (<S.ArrowLeft />) : (
+        <>
+          <S.ArrowRight />
+          <S.LabelFilter>Abrir o Filtro</S.LabelFilter>
+        </>
+        )}
       </S.ButtonOpenOrCloseSidebar>
 
       <S.WrapperConditions openOrCloseSide={isOpened}>
@@ -182,13 +191,13 @@ export function Sidebar() {
                   condition.name = condition.name.replace('5', '')
 
                   return (
-                    <>
-                      <S.Flex key={index}>
+                    <React.Fragment key={index}>
+                      <S.Flex>
                         <S.Checkbox type="checkbox" name={condition.name} checked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
                         <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
                       </S.Flex>
                       {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}
-                    </>
+                    </React.Fragment>
                   )
                 })
               }

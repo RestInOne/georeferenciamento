@@ -13,7 +13,7 @@ import { createPointWithColor } from './createCircle'
 import { getColorByCondition } from '../../gateways/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { clientOnModal, modalIsActive } from '../../state/modal'
+import { clientOnModal, modalIsActive } from '../../atom/modal'
 
 interface IMapWithPins {
   filteredClients: IClient[]
@@ -30,6 +30,9 @@ export default function MapTest(props: IMapWithPins) {
 
     const features : Feature[] = []
 
+    console.log(props.filteredClients)
+
+    if (props.filteredClients.length > 0){
     for (let i = 0; i < props.filteredClients.length; i ++){
       let center : [number, number] = [props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat]
       props.filteredClients[i].condition.forEach(condition => { 
@@ -42,7 +45,7 @@ export default function MapTest(props: IMapWithPins) {
       ))
       })
     } 
-
+  }
     const vectorSource = new VectorSource({
       features: [...features],
     });
@@ -82,7 +85,7 @@ export default function MapTest(props: IMapWithPins) {
       
       map.setTarget(null)
     }
-  }, props.filteredClients);
+  }, [props.filteredClients]);
   
 
   return <S.MapContainer ref={mapRef} />

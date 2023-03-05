@@ -1,6 +1,5 @@
 import { atom, selector } from "recoil";
 import { Filters } from "../enums/filter";
-import { getGeolocation } from "../gateways/getGeolocation";
 import { IClient } from "../interfaces/client";
 import { ICondition } from "../interfaces/condition";
 
@@ -15,27 +14,28 @@ export const filter = atom<ICondition[]>({
   default: [{ name: Filters.EVERY }]
 })
 
-export const filteredGeolocationClients = selector<IClient[]>({
+export const filteredGeolocationClients = selector<IClient[] | null>({
   key: 'filteredGeolocationClients',
-  get: async ({ get }) => {
+  get: ({ get }) => {
     const client = get(clients)
     const filters = get(filter)
 
-    let filteredGeolocationClients : IClient[]
+    let filteredGeolocationClients : IClient[] = []
 
     if (filters[0].name === Filters.EVERY){
       filteredGeolocationClients = client    
     }
     else {
-      client.forEach(async (client, index, clientsArray) => {
+      client.forEach((client, index, clientsArray) => {
       for (let i = 0; i < filters.length; i++){
-        if (clientsArray[index].condition.some((condition) => condition === filters[i])) {
-          filteredGeolocationClients.push(client)
-        }
+        if (clientsArray[index].condition.some((condition) => condition.name === filters[i].name)) {
+          filteredGeolocationClients.push(clientsArray[index])
+        } 
       }
       })
     }
 
     return filteredGeolocationClients
   }
-})
+  }
+)
