@@ -120,10 +120,6 @@ export function Sidebar() {
     }
   ])
 
-  const selectedValues = conditions.filter(condition => condition.checked).map(condition => {
-    return `${condition.name.replace('5', '')}`
-  })
-
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
     const isChecked = event.target.checked;
     condition.checked = isChecked;
@@ -134,15 +130,13 @@ export function Sidebar() {
       
       if(condition.name !== allNameAndChecked.name && condition.checked) {
         allNameAndChecked.checked = false
-       }
-      else if(condition.name !== allNameAndChecked.name && !condition.checked) {
-        allNameAndChecked.checked = true
       }
 
       let newConditions = conditions.slice(1)
 
       if (condition.name === allNameAndChecked.name){
         newConditions.forEach((condition) => condition.checked = false)
+        allNameAndChecked.checked = true
       }
 
       setConditions([{
@@ -150,14 +144,13 @@ export function Sidebar() {
         checked: allNameAndChecked.checked
       }, ...newConditions])
 
-    }
-
-    setFilters(selectedValues.map(value => { return {name: value}}))
+      setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
+        return {name: name}
+      }))
+    } 
 
     setTimeout(() => {
       console.log(filters)
-      console.log(selectedValues)
-      console.log(conditions)
     }, 3000)
 
   }
