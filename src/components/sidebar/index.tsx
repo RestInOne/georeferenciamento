@@ -147,8 +147,6 @@ export function Sidebar() {
     } else {
       const conditionsFalse = conditions.filter(value => value.name === condition.name && condition.checked === false)
       const justCondition = conditionsFalse.at(0)
-      console.log(conditionsFalse)
-      console.log(justCondition)
 
       let newConditionsChange = conditions.slice(1)
       
@@ -167,10 +165,9 @@ export function Sidebar() {
     }
     
     setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
+      // console.log(name)
       return {name: name}
     }))
-
-    console.log(filters)
   }
   
   return (

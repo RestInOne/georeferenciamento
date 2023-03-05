@@ -68,7 +68,7 @@ export const getServerSideProps : GetServerSideProps = async () => {
       bornYear: 2000,
       age: 23,
       condition:[{
-        name: Filters.ADHD,
+        name: Filters.OBESETY_LEVEL_THREE,
       }],
       address: {
         street: "Rua Virginia Ferni",
