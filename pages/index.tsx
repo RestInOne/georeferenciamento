@@ -1,11 +1,30 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { Filters } from '../src/enums/filter'
 import { getGeolocation } from '../src/gateways/getGeolocation'
 import { IClient } from '../src/interfaces/client'
 import Home from '../src/screens/Home'
-import { clients } from '../src/state/clients'
+import { clients } from '../src/atom/clients'
+
+export default function Index({ propClients } : InferGetServerSidePropsType<typeof getServerSideProps>) {
+
+  const [newClients, setClients] = useRecoilState(clients)
+
+  if(newClients.length === 0){
+    setClients(propClients)
+  }
+
+  return (
+    <>
+      <Head>
+        <title>Georeferenciamento</title>
+        <meta name="description" content="Mapa de georeferenciamento de pacientes" />
+      </Head>
+      <Home/>
+    </>
+  )
+}
 
 export const getServerSideProps : GetServerSideProps = async () => {
 
@@ -49,21 +68,4 @@ export const getServerSideProps : GetServerSideProps = async () => {
       propClients
     }
   }
-}
-
-export default function Index({ propClients } : InferGetServerSidePropsType<typeof getServerSideProps>) {
-
-  // console.log(propClients)
-  // const setClients = useSetRecoilState(clients)
-  // setClients(propClients)
-
-  return (
-    <>
-      <Head>
-        <title>Georeferenciamento</title>
-        <meta name="description" content="Mapa de georeferenciamento de pacientes" />
-      </Head>
-      <Home filteredClients={propClients}/>
-    </>
-  )
 }

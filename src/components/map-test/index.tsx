@@ -13,7 +13,7 @@ import { createPointWithColor } from './createCircle'
 import { getColorByCondition } from '../../gateways/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { clientOnModal, modalIsActive } from '../../state/modal'
+import { clientOnModal, modalIsActive } from '../../atom/modal'
 
 interface IMapWithPins {
   filteredClients: IClient[]

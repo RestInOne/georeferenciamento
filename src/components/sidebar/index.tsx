@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as S from './styled'
-import { filter } from '../../state/clients'
-import { useSetRecoilState } from 'recoil'
+import { filter } from '../../atom/clients'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
 function capitalizeWord(str: string) {
   const words = str.split(' ');
@@ -16,10 +16,7 @@ function capitalizeWord(str: string) {
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [selectedValues, setSelectedValues] = useState(["todos"]);
-
-  const setFilters = useSetRecoilState(filter);
-
+  const [filters, setFilters] = useRecoilState(filter);
   const [conditions, setConditions] = useState([
     {
       name: 'todos5',
@@ -123,17 +120,17 @@ export function Sidebar() {
     }
   ])
 
+  const selectedValues = conditions.filter(condition => condition.checked).map(condition => {
+    return `${condition.name.replace('5', '')}`
+  })
+
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
     const isChecked = event.target.checked;
     condition.checked = isChecked;
-    
-    let newSelectedValues = [];
 
     if(condition.checked) {
       const all = conditions.filter(value => value.name === 'todos');
       const allNameAndChecked = all.at(0);
-
-      console.log(allNameAndChecked)
       
       if(condition.name !== allNameAndChecked.name && condition.checked) {
         allNameAndChecked.checked = false
@@ -153,16 +150,17 @@ export function Sidebar() {
         checked: allNameAndChecked.checked
       }, ...newConditions])
 
-
-      console.log(conditions)
-
-      newSelectedValues = [...selectedValues, condition.name]
-    } else {
-      newSelectedValues = selectedValues.filter(value => value !== condition.name)
     }
 
-    setSelectedValues(newSelectedValues)
-    setFilters(selectedValues.map(value => ({ name: value })))
+    setFilters(selectedValues.map(value => { return {name: value}}))
+
+    setTimeout(() => {
+      console.log(filters)
+      console.log(selectedValues)
+      console.log(conditions)
+    }, 3000)
+
+    
 
   }
   
@@ -182,13 +180,13 @@ export function Sidebar() {
                   condition.name = condition.name.replace('5', '')
 
                   return (
-                    <>
-                      <S.Flex key={index}>
+                    <React.Fragment key={index}>
+                      <S.Flex>
                         <S.Checkbox type="checkbox" name={condition.name} checked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
                         <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
                       </S.Flex>
                       {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}
-                    </>
+                    </React.Fragment>
                   )
                 })
               }
