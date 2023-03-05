@@ -160,8 +160,6 @@ export function Sidebar() {
       console.log(conditions)
     }, 3000)
 
-    
-
   }
   
   return (
