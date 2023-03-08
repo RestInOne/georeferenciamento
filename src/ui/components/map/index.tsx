@@ -10,7 +10,7 @@ import Feature from 'ol/Feature';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { createPointWithColor } from './createCircle'
-import { getColorByCondition } from '../../../infra/gateways/getColorByCondition'
+import { getColorByCondition } from '../../../infra/util/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
 import { useSetRecoilState } from 'recoil'
 import { clientOnModal, modalIsActive } from '../../context'
