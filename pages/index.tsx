@@ -1,11 +1,11 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { Filters } from '../src/enums/filter'
-import { getGeolocation } from '../src/gateways/getGeolocation'
-import { IClient } from '../src/interfaces/client'
-import Home from '../src/screens/Home'
-import { clients } from '../src/atom/clients'
+import { Filters } from '../src/infra/enums/filter'
+import { getGeolocation } from '../src/application/gateways/getGeolocation'
+import { IClient } from '../src/domain/entities/client'
+import Home from '../src/ui/screens/Home'
+import { clients } from '../src/ui/context'
 
 export default function Index({ propClients } : InferGetServerSidePropsType<typeof getServerSideProps>) {
 

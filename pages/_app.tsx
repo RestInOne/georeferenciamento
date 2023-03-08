@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { ThemeProvider, DefaultTheme } from 'styled-components'
-import { GlobalStyle } from '../src/theme/globalstyles'
+import { GlobalStyle } from '../src/ui/theme/globalstyles'
 import { RecoilRoot } from 'recoil'
 
 const theme: DefaultTheme = {
