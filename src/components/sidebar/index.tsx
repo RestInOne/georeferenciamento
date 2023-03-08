@@ -156,6 +156,10 @@ export function Sidebar() {
         allNameAndChecked.checked = true
       }
 
+      if(everyConditionsCheckedFalse && allNameAndChecked.checked === false) {
+        allNameAndChecked.checked = true
+      }
+
       newConditionsChange.forEach(condition => condition.name === justCondition.name ? condition.checked = justCondition.checked : condition.checked)
 
       setConditions([{
@@ -165,7 +169,6 @@ export function Sidebar() {
     }
     
     setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
-      // console.log(name)
       return {name: name}
     }))
   }
