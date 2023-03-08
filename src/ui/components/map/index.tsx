@@ -85,6 +85,7 @@ export default function MapComponent(props: IMapWithPins) {
       
       map.setTarget(null)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.filteredClients]);
   
 

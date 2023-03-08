@@ -19,7 +19,7 @@ export default function ClientInformation({visible}: IClientInformation){
     </S.ButtonOpenOrCloseSidebar>
     <S.WrapperConditions openOrCloseSide={isOpened}>
          <h1>{client.name}</h1>
-         {client.condition.map(condition => { return (<h2>{condition.name};</h2>)})}
+         {client.condition.map((condition, index) => { return (<h2 key={index}>{condition.name};</h2>)})}
     </S.WrapperConditions>
     </S.Wrapper> : 
     <S.Wrapper>
