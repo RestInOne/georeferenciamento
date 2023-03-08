@@ -16,7 +16,7 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     padding: 1.5rem;
     cursor: pointer;
     border-radius: 0.8rem;
-    z-index: 11;
+    z-index: 10;
 
     transition: all .3s ease-in-out;
 
@@ -47,7 +47,7 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     width: 35rem;
     height: max-content;
     font-size: 1.5rem;
-    z-index: 5;
+    z-index: 4;
     box-shadow: 6px 10px 16px -3px rgba(0,0,0,0.75);
     border-radius: .8rem;
     padding: 1.5rem;
@@ -62,50 +62,11 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     transition: transform .3s ease-in-out;
 `
 
-export const ScrollRoot = styled(ScrollArea.Root)`
-    width: 31rem;
-    height: 60.5rem;
-    overflow: hidden;
-`
-
-export const ScrollView = styled(ScrollArea.Viewport)`
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    gap: 2rem;
-`
-
-export const ScrollBar = styled(ScrollArea.Scrollbar)`
-    display: flex;
-    user-select: none;
-    touch-action: none;
-    padding: .2rem;
-    flex-direction: column;
-    background-color: #B8B5B0;
-    border-radius: .8rem;
-    
-    &:hover {
-    }
-
-    &[data-orientation='vertical'] {
-        width: 1rem;
-    }
-`
-
-export const ScrollThumb = styled(ScrollArea.Thumb)`
-    flex: 1;
-    background-color: #d4d4d4;
-    border-radius: .8rem;
-`
-
-
-
-export const ArrowLeft = styled(ArrowLeftIcon)`
+export const ArrowRight = styled(ArrowRightIcon)<{opened: boolean}>`
     width: 2rem;
     height: 2rem;
-`
 
-export const ArrowRight = styled(ArrowRightIcon)`
-    width: 2rem;
-    height: 2rem;
+    ${props => props.opened ? css`
+    transform: rotate(0.5turn); 
+    ` : ''}
 `

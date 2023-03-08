@@ -6,14 +6,17 @@ import { getGeolocation } from '../src/application/gateways/getGeolocation'
 import { IClient } from '../src/domain/entities/client'
 import Home from '../src/ui/screens/Home'
 import { clients } from '../src/ui/context'
+import { getClients } from '../src/infra/gateways/getClients'
 
-export default function Index({ propClients } : InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Index({ propClients, data } : InferGetServerSidePropsType<typeof getServerSideProps>) {
 
   const [newClients, setClients] = useRecoilState(clients)
 
   if(newClients.length === 0){
     setClients(propClients)
   }
+
+  console.log(data)
 
   return (
     <>
@@ -27,6 +30,8 @@ export default function Index({ propClients } : InferGetServerSidePropsType<type
 }
 
 export const getServerSideProps : GetServerSideProps = async () => {
+
+  const data = await getClients()
 
   const propClients : IClient[] = [
     {
@@ -81,7 +86,8 @@ export const getServerSideProps : GetServerSideProps = async () => {
 
   return {
     props: {
-      propClients
+      propClients,
+      data
     }
   }
 }

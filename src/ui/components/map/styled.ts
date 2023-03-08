@@ -5,5 +5,4 @@ export const MapContainer = styled.div`
     position: fixed;
     height: 100%;
     width: 100%;
-    right: 0;
 `

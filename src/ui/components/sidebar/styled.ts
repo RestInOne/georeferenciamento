@@ -47,14 +47,13 @@ export const LabelFilter = styled.p`
     transform: rotate(180deg);
 `
 
-export const ArrowLeft = styled(ArrowLeftIcon)`
+export const ArrowLeft = styled(ArrowLeftIcon)<{opened: boolean}>`
     width: 2rem;
     height: 2rem;
-`
 
-export const ArrowRight = styled(ArrowRightIcon)`
-    width: 2rem;
-    height: 2rem;
+    ${props => props.opened ? css`
+    transform: rotate(0.5turn); 
+    ` : ''}
 `
 
 export const IconCheck = styled(CheckIcon)`

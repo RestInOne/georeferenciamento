@@ -177,9 +177,9 @@ export function Sidebar() {
     <>
       <S.Wrapper>
         <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
-          {isOpened ? (<S.ArrowLeft />) : (
+          {isOpened ? (<S.ArrowLeft opened={false} />) : (
           <>
-            <S.ArrowRight />
+            <S.ArrowLeft opened={true} />
             <S.LabelFilter>Abrir o Filtro</S.LabelFilter>
           </>
           )}

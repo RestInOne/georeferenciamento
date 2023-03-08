@@ -10,7 +10,7 @@ import Feature from 'ol/Feature';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { createPointWithColor } from './createCircle'
-import { getColorByCondition } from '../../../infra/gateways/getColorByCondition'
+import { getColorByCondition } from '../../../infra/util/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
 import { useSetRecoilState } from 'recoil'
 import { clientOnModal, modalIsActive } from '../../context'
@@ -29,8 +29,6 @@ export default function MapComponent(props: IMapWithPins) {
   useEffect(() => {
 
     const features : Feature[] = []
-
-    console.log(props.filteredClients)
 
     if (props.filteredClients.length > 0){
     for (let i = 0; i < props.filteredClients.length; i ++){
@@ -64,7 +62,7 @@ export default function MapComponent(props: IMapWithPins) {
         vectorLayer
       ],
       view: new View({
-        center: fromLonLat([0, 0]),
+        center: fromLonLat([-51.31668, -14.4095261]),
         zoom: 4,
       }),
     });
