@@ -15,7 +15,7 @@ export default function ClientInformation({visible}: IClientInformation){
 
     return visible ? <S.Wrapper>
     <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {setIsOpened(old => !old) }}>
-         {isOpened ? (<S.ArrowRight />) : (<S.ArrowLeft />)}
+         {isOpened ? (<S.ArrowRight opened={false} />) : (<S.ArrowRight opened={true}/>)}
     </S.ButtonOpenOrCloseSidebar>
     <S.WrapperConditions openOrCloseSide={isOpened}>
          <h1>{client.name}</h1>
@@ -24,7 +24,7 @@ export default function ClientInformation({visible}: IClientInformation){
     </S.Wrapper> : 
     <S.Wrapper>
          <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {setIsOpened(old => !old) }}>
-         {isOpened ? (<S.ArrowRight />) : (<S.ArrowLeft />)}
+         {isOpened ? (<S.ArrowRight opened={false} />) : (<S.ArrowRight opened={true} />)}
          </S.ButtonOpenOrCloseSidebar>
          <S.WrapperConditions openOrCloseSide={isOpened}>
          <h1>Nenhum paciente selecionado</h1>

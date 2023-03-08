@@ -30,8 +30,6 @@ export default function MapComponent(props: IMapWithPins) {
 
     const features : Feature[] = []
 
-    console.log(props.filteredClients)
-
     if (props.filteredClients.length > 0){
     for (let i = 0; i < props.filteredClients.length; i ++){
       let center : [number, number] = [props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat]
@@ -64,7 +62,7 @@ export default function MapComponent(props: IMapWithPins) {
         vectorLayer
       ],
       view: new View({
-        center: fromLonLat([0, 0]),
+        center: fromLonLat([-51.31668, -14.4095261]),
         zoom: 4,
       }),
     });
