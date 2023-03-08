@@ -171,43 +171,47 @@ export function Sidebar() {
   }
   
   return (
-    <S.Wrapper>
-      <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
-        {isOpened ? (<S.ArrowLeft />) : (
-        <>
-          <S.ArrowRight />
-          <S.LabelFilter>Abrir o Filtro</S.LabelFilter>
-        </>
-        )}
-      </S.ButtonOpenOrCloseSidebar>
+    <>
+      <S.Wrapper>
+        <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
+          {isOpened ? (<S.ArrowLeft />) : (
+          <>
+            <S.ArrowRight />
+            <S.LabelFilter>Abrir o Filtro</S.LabelFilter>
+          </>
+          )}
+        </S.ButtonOpenOrCloseSidebar>
+      </S.Wrapper>
 
-      <S.WrapperConditions openOrCloseSide={isOpened}>
-        <S.LabelTitle>Selecione uma Condição:</S.LabelTitle>
-        <S.ScrollRoot>
-          <S.ScrollView>
-            <S.Container>
-              {
-                conditions.map((condition, index, conditionArray) => {
-                  condition.name = condition.name.replace('5', '')
+      <S.Wrapper>
+        <S.WrapperConditions openOrCloseSide={isOpened}>
+          <S.LabelTitle>Selecione uma Condição:</S.LabelTitle>
+          <S.ScrollRoot>
+            <S.ScrollView>
+              <S.Container>
+                {
+                  conditions.map((condition, index, conditionArray) => {
+                    condition.name = condition.name.replace('5', '')
 
-                  return (
-                    <React.Fragment key={index}>
-                      <S.Flex>
-                        <S.Checkbox type="checkbox" name={condition.name} checked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
-                        <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
-                      </S.Flex>
-                      {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}
-                    </React.Fragment>
-                  )
-                })
-              }
-            </S.Container>
-          </S.ScrollView>
-          <S.ScrollBar orientation='vertical'>
-            <S.ScrollThumb />
-          </S.ScrollBar>
-        </S.ScrollRoot>
-      </S.WrapperConditions>
-    </S.Wrapper>
+                    return (
+                      <React.Fragment key={index}>
+                        <S.Flex>
+                          <S.Checkbox type="checkbox" name={condition.name} checked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
+                          <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
+                        </S.Flex>
+                        {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}
+                      </React.Fragment>
+                    )
+                  })
+                }
+              </S.Container>
+            </S.ScrollView>
+            <S.ScrollBar orientation='vertical'>
+              <S.ScrollThumb />
+            </S.ScrollBar>
+          </S.ScrollRoot>
+        </S.WrapperConditions>
+      </S.Wrapper>
+    </>
   )
 }

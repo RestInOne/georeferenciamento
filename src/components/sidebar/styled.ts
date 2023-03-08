@@ -92,9 +92,11 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
 
     ${props => props.openOrCloseSide ? css`
     transform: translateX(0);
-    ` : ''  
+    ` 
+    :
+    ''
     };
-    
+
     transition: transform .4s ease-in-out;
 `
 
