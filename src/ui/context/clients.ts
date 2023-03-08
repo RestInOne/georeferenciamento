@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
-import { Filters } from "../enums/filter";
-import { IClient } from "../interfaces/client";
-import { ICondition } from "../interfaces/condition";
+import { Filters } from "../../infra/enums/filter";
+import { IClient } from "../../domain/entities/client";
+import { ICondition } from "../../domain/entities/condition";
 
 
 export const clients = atom<IClient[]>({

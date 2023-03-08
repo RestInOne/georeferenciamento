@@ -1,10 +1,8 @@
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import ClientInformation from "../../components/client-information";
-import MapTest from "../../components/map-test";
+import Map from "../../components/map";
 import { Sidebar } from "../../components/sidebar";
-import { IClient } from "../../interfaces/client";
-import { clients, filteredGeolocationClients } from "../../atom/clients";
-import { modalIsActive } from "../../atom/modal";
+import { filteredGeolocationClients, modalIsActive } from "../../context";
 import * as S from './styled'
 
 
@@ -18,7 +16,7 @@ export default function Home(){
         <S.Wrapper>
             <Sidebar/>
             <ClientInformation visible={isVisible}/>
-            <MapTest filteredClients={filteredClients}/>
+            <Map filteredClients={filteredClients}/>
         </S.Wrapper>
     )
 }

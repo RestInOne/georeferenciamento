@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IGeolocation } from "../interfaces/geolocation";
+import { IGeolocation } from "../../domain/entities/geolocation";
 
 const key = "acf1bdd7a84f4dd0beb226de9072d1f9"
 

@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
-import * as Selector from "@radix-ui/react-separator";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 
 export const Wrapper = styled.div`
     display: flex;

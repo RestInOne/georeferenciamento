@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as S from './styled'
-import { filter } from '../../atom/clients'
+import { filter } from '../../context/clients';
 import { useRecoilState, useSetRecoilState } from 'recoil'
 
 function capitalizeWord(str: string) {

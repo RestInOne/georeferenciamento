@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import { clientOnModal } from '../../atom/modal'
+import { clientOnModal } from '../../context'
 import * as S from './styled'
 
 interface IClientInformation {

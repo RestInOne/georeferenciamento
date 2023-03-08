@@ -1,7 +1,7 @@
 import { Fill, Icon, Image, Stroke, Style} from 'ol/style.js';
 import { Point } from 'ol/geom';
 import Feature from 'ol/Feature';
-import { IClient } from '../../interfaces/client';
+import { IClient } from '../../../domain/entities/client';
 import { fromLonLat } from 'ol/proj';
 
 export const createPointWithColor = (center : [number, number], radius: number, color: string, client: IClient) => {
