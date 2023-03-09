@@ -31,11 +31,10 @@ export default function MapComponent(props: IMapWithPins) {
 
     if (props.filteredClients.length > 0){
     for (let i = 0; i < props.filteredClients.length; i ++){
-      let center : [number, number] = [props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat]
-      props.filteredClients[i].exam.conditions.forEach(condition => { 
+      props.filteredClients[i].exam.conditions.forEach((condition, index) => { 
         features.push(
         createPointWithColor(
-        center,
+          [props.filteredClients[i].geolocation.lon - index*0.00001, props.filteredClients[i].geolocation.lat],
         12,
         getColorByCondition(condition.name),
         props.filteredClients[i]

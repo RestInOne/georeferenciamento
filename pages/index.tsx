@@ -17,7 +17,7 @@ export default function Index({ propClients, data } : InferGetServerSidePropsTyp
     setClients(propClients)
   }
 
-  console.log(data)
+  // console.log(data)
 
   return (
     <>

@@ -3,12 +3,14 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition'
 import { clientOnModal, modalIsActive } from '../../context'
 import * as S from './styled'
+import { doctorLoggedIn } from '../../context/doctor'
 
 export default function ClientInformation(){
 
     const client = useRecoilValue(clientOnModal)
     const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
     const formatNameCondition = useFormatNameCondition();
+    const doctor = useRecoilValue(doctorLoggedIn)
 
     return (
     <S.Wrapper>
@@ -22,10 +24,18 @@ export default function ClientInformation(){
                   <h1>Nenhum paciente selecionado</h1>
                   :
                   (
-                        <>
-                        <h1>{client.name}</h1>
-                        {client.exam.conditions.map((condition, index) => { return (<h2 key={index}>{formatNameCondition(condition.name)};</h2>)})}         
-                        </>
+                        <S.Informations>
+                        <S.ClientName>{client.name}</S.ClientName>
+                        <S.CommonInformation>CPF: {client.cpf}</S.CommonInformation>
+                        <S.CommonInformation>
+                              {client.address.state === undefined ? '' : client.address.state + ', '}  
+                              {client.address.city + ', '} 
+                              {client.address.district === undefined ? '' : client.address.district + ', '}
+                              {client.address.street + ','} {client.address.number}
+                              </S.CommonInformation>
+                        {client.exam.conditions.map((condition, index) => { return (<S.CommonInformation key={index}>{formatNameCondition(condition.name)}</S.CommonInformation>)})} 
+                        <S.DoctorName>{doctor.name}</S.DoctorName>        
+                        </S.Informations>
                   )
             }
           </S.WrapperConditions>

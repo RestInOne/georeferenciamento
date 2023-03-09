@@ -40,7 +40,6 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;
     flex-direction: column;
     background-color: #DEDBD5;
     align-items: center;
@@ -69,4 +68,23 @@ export const ArrowRight = styled(ArrowRightIcon)<{opened: boolean}>`
     ${props => props.opened ? css`
     transform: rotate(0.5turn); 
     ` : ''}
+`
+export const Informations = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+`
+
+export const ClientName = styled.h3`
+    font-size: 32px;
+    font-weight: 700;
+`
+export const CommonInformation = styled.p`
+    font-size: 18px;
+`
+
+export const DoctorName = styled.em`
+    font-size: 20px;
+    font-weight: 400;
 `
