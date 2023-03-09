@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import * as S from './styled'
 import { filter } from '../../context/clients';
 import { useRecoilState } from 'recoil'
@@ -12,7 +12,6 @@ export function Sidebar() {
   const formatNameCondition = useFormatNameCondition();
 
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     if(event.target.checked) {
       setFilters(old => [...old, (event.target.value as any)])
     } else {
@@ -22,54 +21,8 @@ export function Sidebar() {
 
       setFilters(newFilters)
     }
-
-    // if(condition.checked) {
-      
-    //   if(condition.name !== allNameAndChecked.name && condition.checked) {
-    //     allNameAndChecked.checked = false
-    //   }
-
-    //   let newConditions = conditions.slice(1)
-
-    //   if (condition.name === allNameAndChecked.name){
-    //     newConditions.forEach((condition) => condition.checked = false)
-    //     allNameAndChecked.checked = true
-    //   }
-
-    //   setConditions([{
-    //     name: allNameAndChecked.name,
-    //     checked: allNameAndChecked.checked
-    //   }, ...newConditions])
-
-    // } else {
-    //   const conditionsFalse = conditions.filter(value => value.name === condition.name && condition.checked === false)
-    //   const justCondition = conditionsFalse.at(0)
-
-    //   let newConditionsChange = conditions.slice(1)
-      
-    //   const everyConditionsCheckedFalse = newConditionsChange.every(value => value.checked === false)
-
-    //   if(condition.name !== allNameAndChecked.name && everyConditionsCheckedFalse) {
-    //     allNameAndChecked.checked = true
-    //   }
-
-    //   if(everyConditionsCheckedFalse && allNameAndChecked.checked === false) {
-    //     allNameAndChecked.checked = true
-    //   }
-
-    //   newConditionsChange.forEach(condition => condition.name === justCondition.name ? condition.checked = justCondition.checked : condition.checked)
-
-    //   setConditions([{
-    //     name: allNameAndChecked.name,
-    //     checked: allNameAndChecked.checked
-    //   },...newConditionsChange])
-    // }
-    
-    // setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
-    //   return {name: name}
-    // }))
   }
-  
+
   return (
     <>
       <S.Wrapper>
@@ -85,32 +38,31 @@ export function Sidebar() {
 
       <S.Wrapper>
         <S.WrapperConditions openOrCloseSide={isOpened}>
-          <S.LabelTitle>Selecione uma Condição:</S.LabelTitle>
-          <S.ScrollRoot>
-            <S.ScrollView>
-              <S.Container>
-                {
-                  Object.keys(ConditionName).map((key, index, conditionArray) => {
-                    let condition = ConditionName[key]
-                    condition = condition.replace('5', '')
+          <S.LabelTitle>Selecione como quer Filtrar:</S.LabelTitle>
+            <S.ScrollRoot>
+              <S.ScrollView>
+                <S.Container>
+                  {
+                    Object.keys(ConditionName).map((key, index) => {
+                      let condition = ConditionName[key]
 
-                    return (
-                      <React.Fragment key={index}>
-                        <S.Flex>
-                          <S.Checkbox type="checkbox" value={condition} onChange={(event) => handleChecked(event)} />
-                          <S.Label>{formatNameCondition(condition)}</S.Label>
-                        </S.Flex>
-                        {conditionArray[index].endsWith("5") ? (<S.Separator />) : (<></>)}
-                      </React.Fragment>
-                    )
-                  })
-                }
-              </S.Container>
-            </S.ScrollView>
-            <S.ScrollBar orientation='vertical'>
-              <S.ScrollThumb />
-            </S.ScrollBar>
-          </S.ScrollRoot>
+                      return (
+                        <React.Fragment key={index}>
+                          <S.Flex>
+                            <S.Checkbox type="checkbox" value={condition} onChange={(event) => handleChecked(event)} />
+                            <S.Label>{formatNameCondition(condition)}</S.Label>
+                          </S.Flex>
+                          {ConditionName[key].endsWith("5") ? (<S.Separator />) : (<></>)}
+                        </React.Fragment>
+                      )
+                    })
+                  }
+                </S.Container>
+              </S.ScrollView>
+              <S.ScrollBar orientation='vertical'>
+                <S.ScrollThumb />
+              </S.ScrollBar>
+            </S.ScrollRoot>
         </S.WrapperConditions>
       </S.Wrapper>
     </>

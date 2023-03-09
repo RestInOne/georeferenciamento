@@ -1,7 +1,7 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import * as Selector from "@radix-ui/react-separator";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ArrowLeftIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 export const Wrapper = styled.div`
     display: flex;
@@ -54,6 +54,14 @@ export const ArrowLeft = styled(ArrowLeftIcon)<{opened: boolean}>`
     ${props => props.opened ? css`
     transform: rotate(0.5turn); 
     ` : ''}
+`
+
+export const ChevronDown = styled(ChevronDownIcon)`
+    transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+    
+    [data-state='open'] & { 
+        transform: rotate(180deg); 
+    }
 `
 
 export const IconCheck = styled(CheckIcon)`
@@ -144,7 +152,7 @@ export const Checkbox = styled.input`
 
 export const ScrollRoot = styled(ScrollArea.Root)`
     width: 31rem;
-    height: 65rem;
+    height: 55rem;
     overflow: hidden;
 `
 
