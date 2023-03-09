@@ -88,3 +88,8 @@ export const DoctorName = styled.em`
     font-size: 20px;
     font-weight: 400;
 `
+export const ConditionsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem
+`

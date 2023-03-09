@@ -33,7 +33,10 @@ export default function ClientInformation(){
                               {client.address.district === undefined ? '' : client.address.district + ', '}
                               {client.address.street + ','} {client.address.number}
                               </S.CommonInformation>
-                        {client.exam.conditions.map((condition, index) => { return (<S.CommonInformation key={index}>{formatNameCondition(condition.name)}</S.CommonInformation>)})} 
+                        <S.CommonInformation>Patologia:</S.CommonInformation>
+                        <S.CommonInformation>
+                              {client.exam.conditions.map((condition, index) => { return (<S.CommonInformation key={index}>{formatNameCondition(condition.name)}</S.CommonInformation>)})}
+                        </S.CommonInformation>
                         <S.DoctorName>{doctor.name}</S.DoctorName>        
                         </S.Informations>
                   )
