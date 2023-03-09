@@ -94,10 +94,13 @@ export const matchedFilterAddresses = selector<string[]>({
         })
 
       for(let i = 0; i < lowercasedAvailableAddress.length; i++){
-        if (lowercasedAvailableAddress[i].includes(lowercasedFilterAddress)){
-          if(!matchedFilterAddresses.find(address => address === lowercasedAvailableAddress[i])){
-            matchedFilterAddresses.push(lowercasedAvailableAddress[i].toUpperCase())
-        }}
+        if (lowercasedAvailableAddress[i].includes(lowercasedFilterAddress) && lowercasedFilterAddress !== ''){  
+            matchedFilterAddresses.forEach(match => {
+              if (!match.includes(lowercasedFilterAddress)){
+                matchedFilterAddresses.push(lowercasedAvailableAddress[i].toUpperCase())
+              }
+            })     
+        }
       }
     })
 
