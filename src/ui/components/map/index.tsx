@@ -13,7 +13,7 @@ import { createPointWithColor } from './createCircle'
 import { getColorByCondition } from '../../../infra/util/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
 import { useSetRecoilState } from 'recoil'
-import { clientOnModal, modalIsActive } from '../../context'
+import { clientOnModal } from '../../context'
 
 interface IMapWithPins {
   filteredClients: IClient[]
@@ -23,8 +23,6 @@ export default function MapComponent(props: IMapWithPins) {
   
   const mapRef = useRef<HTMLDivElement>(null);
   const setClientOn = useSetRecoilState(clientOnModal)
-  const setModal = useSetRecoilState(modalIsActive)
-
 
   useEffect(() => {
 
@@ -51,8 +49,6 @@ export default function MapComponent(props: IMapWithPins) {
       source: vectorSource,   
     });
 
-
-
     const map = new Map({
       target: mapRef.current!,
       layers: [
@@ -73,14 +69,22 @@ export default function MapComponent(props: IMapWithPins) {
       const [feature] = evt.map.getFeaturesAtPixel(evt.pixel)
       const client = feature.get('client')
       setClientOn(client)
-      setModal(true)      
      } else {
-      setModal(false)
+      setClientOn(null)
      }
     })
 
+    map.on('pointermove', function(event) {
+      let pixel = map.getEventPixel(event.originalEvent);
+      let hit = map.hasFeatureAtPixel(pixel)
+      map.getViewport().style.cursor = hit ? 'pointer' : '';
+    })
+
+    map.on('pointerdrag', function(event) {
+        map.getViewport().style.cursor = 'grab'
+    })
+
     return () => { 
-      
       map.setTarget(null)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

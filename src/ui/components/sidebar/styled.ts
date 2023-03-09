@@ -144,7 +144,7 @@ export const Checkbox = styled.input`
 
 export const ScrollRoot = styled(ScrollArea.Root)`
     width: 31rem;
-    height: 60.5rem;
+    height: 65rem;
     overflow: hidden;
 `
 

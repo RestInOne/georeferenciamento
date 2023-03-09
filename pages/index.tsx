@@ -1,12 +1,13 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { Filters } from '../src/infra/enums/filter'
-import { getGeolocation } from '../src/application/gateways/getGeolocation'
+import { getGeolocation } from '../src/infra/gateways/getGeolocation'
 import { IClient } from '../src/domain/entities/client'
 import Home from '../src/ui/screens/Home'
 import { clients } from '../src/ui/context'
 import { getClients } from '../src/infra/gateways/getClients'
+import useFormatNameCondition from '../src/ui/hooks/useFormatNameCondition'
+import { ConditionName } from '../src/domain'
 
 export default function Index({ propClients, data } : InferGetServerSidePropsType<typeof getServerSideProps>) {
 
@@ -31,6 +32,7 @@ export default function Index({ propClients, data } : InferGetServerSidePropsTyp
 
 export const getServerSideProps : GetServerSideProps = async () => {
 
+  const formatNameCondition = useFormatNameCondition()
   const data = await getClients()
 
   const propClients : IClient[] = [
@@ -41,7 +43,7 @@ export const getServerSideProps : GetServerSideProps = async () => {
       bornYear: 2005,
       age: 17,
       condition:[ {
-        name: Filters.OVERWEIGHT,
+        name: ConditionName.OVERWEIGHT,
       }],
       address: {
         street: "Rua Francisco Rodrigues Seckler",
@@ -57,7 +59,7 @@ export const getServerSideProps : GetServerSideProps = async () => {
       bornYear: 2005,
       age: 17,
       condition:[ {
-        name: Filters.DIABETES,
+        name: ConditionName.DIABETES,
       }],
       address: {
         street: "Rua Victorio Santim",
@@ -73,7 +75,7 @@ export const getServerSideProps : GetServerSideProps = async () => {
       bornYear: 2000,
       age: 23,
       condition:[{
-        name: Filters.OBESETY_LEVEL_THREE,
+        name: ConditionName.OBESETY_LEVEL_THREE,
       }],
       address: {
         street: "Rua Virginia Ferni",

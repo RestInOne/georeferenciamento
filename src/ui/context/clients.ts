@@ -1,7 +1,6 @@
 import { atom, selector } from "recoil";
-import { Filters } from "../../infra/enums/filter";
 import { IClient } from "../../domain/entities/client";
-import { ICondition } from "../../domain/entities/condition";
+import { ConditionName, ICondition } from "../../domain/entities/condition";
 
 
 export const clients = atom<IClient[]>({
@@ -9,9 +8,9 @@ export const clients = atom<IClient[]>({
     default: []
 })
 
-export const filter = atom<ICondition[]>({
+export const filter = atom<ConditionName[]>({
   key: 'filter',
-  default: [{ name: Filters.EVERY }]
+  default: []
 })
 
 export const filteredGeolocationClients = selector<IClient[] | null>({
@@ -22,13 +21,13 @@ export const filteredGeolocationClients = selector<IClient[] | null>({
 
     let filteredGeolocationClients : IClient[] = []
 
-    if (filters[0].name === Filters.EVERY){
+    if (!filters.length){
       filteredGeolocationClients = client    
     }
     else {
       client.forEach((client, index, clientsArray) => {
       for (let i = 0; i < filters.length; i++){
-        if (clientsArray[index].condition.some((condition) => condition.name === filters[i].name)) {
+        if (clientsArray[index].condition.some((condition) => condition.name === filters[i])) {
           filteredGeolocationClients.push(clientsArray[index])
         } 
       }
