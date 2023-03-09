@@ -1,3 +1,6 @@
 export * from './entities/client'
 export * from './entities/geolocation'
 export * from './entities/condition'
+export * from './entities/address'
+export * from './entities/exam'
+export * from './entities/doctor'

@@ -1,13 +1,13 @@
 import React, { forwardRef, useState } from 'react';
 import * as S from './styled'
-import { filter } from '../../context/clients';
+import { conditionFilter } from '../../context/clients';
 import { useRecoilState } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [filters, setFilters] = useRecoilState(filter);
+  const [filters, setFilters] = useRecoilState(conditionFilter);
 
   const formatNameCondition = useFormatNameCondition();
 
