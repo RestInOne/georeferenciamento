@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition'
-import { clientOnModal } from '../../context'
+import { clientOnModal, modalIsActive } from '../../context'
 import * as S from './styled'
 
 export default function ClientInformation(){
 
     const client = useRecoilValue(clientOnModal)
-    const [isOpened, setIsOpened] = useState<boolean>(false);
+    const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
     const formatNameCondition = useFormatNameCondition();
 
     return (

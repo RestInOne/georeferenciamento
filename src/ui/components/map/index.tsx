@@ -12,8 +12,8 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { createPointWithColor } from './createCircle'
 import { getColorByCondition } from '../../../infra/util/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
-import { useSetRecoilState } from 'recoil'
-import { clientOnModal } from '../../context'
+import { useRecoilState, useSetRecoilState } from 'recoil'
+import { clientOnModal, modalIsActive } from '../../context'
 
 interface IMapWithPins {
   filteredClients: IClient[]
@@ -23,6 +23,7 @@ export default function MapComponent(props: IMapWithPins) {
   
   const mapRef = useRef<HTMLDivElement>(null);
   const setClientOn = useSetRecoilState(clientOnModal)
+  const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
 
   useEffect(() => {
 
@@ -69,8 +70,10 @@ export default function MapComponent(props: IMapWithPins) {
       const [feature] = evt.map.getFeaturesAtPixel(evt.pixel)
       const client = feature.get('client')
       setClientOn(client)
+      setIsOpened(true)
      } else {
       setClientOn(null)
+      setIsOpened(false)
      }
     })
 
