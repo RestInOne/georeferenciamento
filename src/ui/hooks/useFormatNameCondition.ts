@@ -7,7 +7,7 @@ const useFormatNameCondition = () => {
             words[i] = word.charAt(0).toUpperCase() + word.slice(1);
         }
 
-        return words.join(' ').replace(/_/g, ' ');
+        return words.join(' ').replace(/_/g, ' ').replace('5', '');
     }
 }
 

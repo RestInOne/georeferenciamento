@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import * as S from './styled'
-import { conditionFilter } from '../../context/clients';
-import { useRecoilState } from 'recoil'
+import { conditionFilter, matchedFilterAddresses, runTimeAddressFilter } from '../../context/clients';
+import { useRecoilState, useRecoilValue } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
+import ChipAddress from '../chip-address';
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [conditionFilterIsOpened, setConditionFilterIsOpened] = useState<boolean>(false);
+  const [addressFilterIsOpened, setAddressFilterIsOpened] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>('');
   const [filters, setFilters] = useRecoilState(conditionFilter);
+  const clientAddress = useRecoilValue(matchedFilterAddresses);
+  const [addressFilter, setAddressFilter] = useRecoilState(runTimeAddressFilter)
 
   const formatNameCondition = useFormatNameCondition();
 
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     if(event.target.checked) {
       setFilters(old => [...old, (event.target.value as any)])
     } else {
@@ -23,7 +28,13 @@ export function Sidebar() {
       setFilters(newFilters)
     }
   }
-  
+
+  const filterByDistrictAndCity = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(event.target.value)
+    setAddressFilter(old => [...old, address])
+
+  }
+
   return (
     <>
       <S.Wrapper>
@@ -39,32 +50,65 @@ export function Sidebar() {
 
       <S.Wrapper>
         <S.WrapperConditions openOrCloseSide={isOpened}>
-          <S.LabelTitle>Selecione uma Condição:</S.LabelTitle>
-          <S.ScrollRoot>
-            <S.ScrollView>
-              <S.Container>
-                {
-                  Object.keys(ConditionName).map((key, index, conditionArray) => {
-                    let condition = ConditionName[key]
-                    condition = condition.replace('5', '')
+          <S.LabelTitle>Selecione como quer Filtrar:</S.LabelTitle>
+          <S.TriggerFilter onClick={() => setConditionFilterIsOpened(old => !old)}>
+            <span>Condições</span>
+            <S.ChevronDown aria-hidden opened={conditionFilterIsOpened}/>
+          </S.TriggerFilter>
+          {
+            conditionFilterIsOpened ? (
+              <S.ContainerFilters>
+                <S.ScrollRoot>
+                  <S.ScrollView>
+                    <S.Container>
+                      {
+                        Object.keys(ConditionName).map((key, index) => {
+                          let condition = ConditionName[key]
 
-                    return (
-                      <React.Fragment key={index}>
-                        <S.Flex>
-                          <S.Checkbox type="checkbox" value={condition} onChange={(event) => handleChecked(event)} />
-                          <S.Label>{formatNameCondition(condition)}</S.Label>
-                        </S.Flex>
-                        {conditionArray[index].endsWith("5") ? (<S.Separator />) : (<></>)}
-                      </React.Fragment>
-                    )
-                  })
-                }
-              </S.Container>
-            </S.ScrollView>
-            <S.ScrollBar orientation='vertical'>
-              <S.ScrollThumb />
-            </S.ScrollBar>
-          </S.ScrollRoot>
+                          return (
+                            <React.Fragment key={index}>
+                              <S.Flex>
+                                <S.Checkbox type="checkbox" value={condition} onChange={(event) => handleChecked(event)} />
+                                <S.Label>{formatNameCondition(condition)}</S.Label>
+                              </S.Flex>
+                              {ConditionName[key].endsWith("5") ? (<S.Separator />) : (<></>)}
+                            </React.Fragment>
+                          )
+                        })
+                      }
+                    </S.Container>
+                  </S.ScrollView>
+                  <S.ScrollBar orientation='vertical'>
+                    <S.ScrollThumb />
+                  </S.ScrollBar>
+                </S.ScrollRoot>
+              </S.ContainerFilters>
+            ) 
+            : 
+            <></>
+          }
+
+          <S.TriggerFilter onClick={() => setAddressFilterIsOpened(old => !old)}>
+            <span>Endereço</span>
+            <S.ChevronDown aria-hidden opened={addressFilterIsOpened}/>
+          </S.TriggerFilter>
+          {
+            addressFilterIsOpened ? (
+              <S.ContainerFilters>
+                <S.InputSearchAddress onChange={(event) => filterByDistrictAndCity(event)} />
+                <S.ContainerChipAddress>
+                  <ChipAddress>teste</ChipAddress>
+                </S.ContainerChipAddress>
+                <S.AddressesFound>
+                  {
+                    clientAddress.map((address, index) => (<p key={index}>{address}</p>))
+                  }
+                </S.AddressesFound>
+              </S.ContainerFilters>
+            )
+            :
+            <></>
+          }
         </S.WrapperConditions>
       </S.Wrapper>
     </>

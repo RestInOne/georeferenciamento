@@ -60,19 +60,37 @@ export const addressFilter = atom<string[]>({
   default: []
 })
 
+export const runTimeAddressFilter = atom<string[]>({
+  key: 'runTimeAddressFilter',
+  default: []
+})
+
 export const matchedFilterAddresses = selector<string[]>({
   key: 'matchedFilterAddresses',
   get: ({get}) => {
     const addressesAvailable = get(clientAddresses)
-    const addressesOnFilter = get(addressFilter)
+    const addressesOnFilter = get(runTimeAddressFilter)
 
     let matchedFilterAddresses : string[] = []
 
     addressesOnFilter.forEach((filterAddress) => {
       const lowercasedFilterAddress = filterAddress.toLowerCase()
         let lowercasedAvailableAddress : string[] = []
-        Object.keys(addressesAvailable).forEach((information) => {
-          lowercasedAvailableAddress.push(information.toLowerCase())
+        addressesAvailable.forEach((information) => {
+          let number = information.number+'';
+          let street = information.street;
+          let city = information.city;
+          let district = '';
+          let state = '';
+
+          if(information.state){
+              state = information.state
+          }
+          if(information.district){
+              district = information.district
+          }
+          let all = `${street} ${district} ${city} ${state} ${number}`
+          lowercasedAvailableAddress.push(all.toLowerCase())
         })
 
       for(let i = 0; i < lowercasedAvailableAddress.length; i++){

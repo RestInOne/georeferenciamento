@@ -1,7 +1,7 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import * as Selector from "@radix-ui/react-separator";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
-import { CheckIcon, ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ArrowLeftIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 export const Wrapper = styled.div`
     display: flex;
@@ -47,13 +47,19 @@ export const LabelFilter = styled.p`
     transform: rotate(180deg);
 `
 
-export const ArrowLeft = styled(ArrowLeftIcon)<{opened: boolean}>`
+export const ArrowLeft = styled(ArrowLeftIcon)<{ opened: boolean }>`
     width: 2rem;
     height: 2rem;
 
     ${props => props.opened ? css`
     transform: rotate(0.5turn); 
     ` : ''}
+`
+
+export const ChevronDown = styled(ChevronDownIcon)<{ opened: boolean }>`
+    transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+    
+    ${props => props.opened ? css` transform: rotate(180deg); ` : ''}
 `
 
 export const IconCheck = styled(CheckIcon)`
@@ -144,7 +150,7 @@ export const Checkbox = styled.input`
 
 export const ScrollRoot = styled(ScrollArea.Root)`
     width: 31rem;
-    height: 65rem;
+    height: 55rem;
     overflow: hidden;
 `
 
@@ -176,4 +182,50 @@ export const ScrollThumb = styled(ScrollArea.Thumb)`
     flex: 1;
     background-color: #d4d4d4;
     border-radius: .8rem;
+`
+
+export const TriggerFilter = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.8rem;
+    padding: 1.5rem;
+    cursor: pointer;
+
+    transition: all .3s ease-in-out;
+
+    :hover {
+        opacity: .6;
+    }
+`
+
+export const ContainerFilters = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+
+export const InputSearchAddress = styled.input`
+    border-radius: .5rem;
+    width: 28rem;
+    height: 3.5rem;
+    background-color: transparent;
+    border: .1rem solid #000000;
+    padding: 1rem 1rem;
+    font-size: 2rem;
+`
+
+export const ContainerChipAddress = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+`
+
+export const AddressesFound = styled.div`
+    height: max-content;
+    width: 35rem;
 `
