@@ -226,6 +226,25 @@ export const ContainerChipAddress = styled.div`
 `
 
 export const AddressesFound = styled.div`
+    display: flex;
+    flex-direction: column;
     height: max-content;
     width: 35rem;
+    margin-top: 2rem;
+    justify-content: center;
+    align-items: center;
+`
+
+export const ButtonAddress = styled.button`
+    font-size: 1.6rem;
+    padding: 2rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+    transition: all .3s ease-in-out;
+
+    :hover {
+        opacity: .6
+    }
 `

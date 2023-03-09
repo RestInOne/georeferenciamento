@@ -30,9 +30,14 @@ export function Sidebar() {
   }
 
   const filterByDistrictAndCity = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(event.target.value)
-    setAddressFilter(old => [...old, address])
+    if(!clientAddress.includes(event.target.value)) {
+      setAddress(event.target.value)
+      setAddressFilter(old => [...old, address])
+    }
 
+    if(event.target.value === '') {
+      setAddressFilter([])
+    }
   }
 
   return (
@@ -97,11 +102,13 @@ export function Sidebar() {
               <S.ContainerFilters>
                 <S.InputSearchAddress onChange={(event) => filterByDistrictAndCity(event)} />
                 <S.ContainerChipAddress>
-                  <ChipAddress>teste</ChipAddress>
+                  {/* <ChipAddress onClick={(event) => deleteChip(event)}>teste</ChipAddress> */}
                 </S.ContainerChipAddress>
                 <S.AddressesFound>
                   {
-                    clientAddress.map((address, index) => (<p key={index}>{address}</p>))
+                    clientAddress.map((address, index) => (
+                    <S.ButtonAddress key={index}>{address}</S.ButtonAddress>
+                    ))
                   }
                 </S.AddressesFound>
               </S.ContainerFilters>
