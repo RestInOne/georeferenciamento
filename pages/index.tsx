@@ -32,57 +32,83 @@ export default function Index({ propClients, data } : InferGetServerSidePropsTyp
 
 export const getServerSideProps : GetServerSideProps = async () => {
 
-  const formatNameCondition = useFormatNameCondition()
   const data = await getClients()
 
   const propClients : IClient[] = [
     {
       id: "434324324",
-      name: "Algum Nome",
-      cpf: "434234324324",
-      bornYear: 2005,
+      name: "Sandro Curió",
+      cpf: "284549249",
       age: 17,
-      condition:[ {
-        name: ConditionName.OVERWEIGHT,
-      }],
+      exam: {
+        id: "d02857589",
+        conditions: [
+          {
+          name: ConditionName.LIGHT_RESISTENCE_INSULINE
+          },
+          {
+          name: ConditionName.DIABETES
+          }
+        ],
+        doctor_id: "123",
+        patient_id: "434324324",
+        date: '2023-03-09'
+      },
       address: {
         street: "Rua Francisco Rodrigues Seckler",
         number: 111,
         city: "São Paulo"
       },
-      geolocation: await getGeolocation("Rua Francisco Rodrigues Seckler", 111,  "São Paulo")
+      geolocation: await getGeolocation({street: "Rua Francisco Rodrigues Seckler", number: 111, city: "São Paulo"})
     },
     {
-      id: "4347676724",
-      name: "Outro Nome",
-      cpf: "434234324324",
-      bornYear: 2005,
+      id: "jfjfd8jd0g",
+      name: "Carlos Simão",
+      cpf: "339392495",
       age: 17,
-      condition:[ {
-        name: ConditionName.DIABETES,
-      }],
-      address: {
-        street: "Rua Victorio Santim",
-        number: 86,
-        city: "São Paulo"
+      exam: {
+        id: "d594039",
+        conditions: [
+          {
+          name: ConditionName.MEDIUM_RESISTENCE_INSULINE
+          }
+        ],
+        doctor_id: "123",
+        patient_id: "jfjfd8jd0g",
+        date: '2023-03-09'
       },
-      geolocation: await getGeolocation("Rua Victorio Santim", 3086,  "São Paulo")
-    },
-    {
-      id: "5654553112",
-      name: "Julio Ruan",
-      cpf: "788956321245",
-      bornYear: 2000,
-      age: 23,
-      condition:[{
-        name: ConditionName.OBESETY_LEVEL_THREE,
-      }],
       address: {
-        street: "Rua Virginia Ferni",
+        street: "Rua Virgínia Ferni",
         number: 400,
         city: "São Paulo"
       },
-      geolocation: await getGeolocation("Rua Virginia Ferni", 400,  "São Paulo")
+      geolocation: await getGeolocation({street: "Rua Virgínia Ferni", number: 400, city: "São Paulo"})
+    },
+    {
+      id: "kghkf8d830",
+      name: "Samuel Cunha",
+      cpf: "3983943948",
+      age: 17,
+      exam: {
+        id: "d32d3d22d",
+        conditions: [
+          {
+          name: ConditionName.MEDIUM_AMPUTATION_RISK
+          },
+          {
+          name: ConditionName.OBESETY_LEVEL_ONE
+          }
+        ],
+        doctor_id: "123",
+        patient_id: "kghkf8d830",
+        date: '2023-03-09'
+      },
+      address: {
+        street: "Rua Apucarana",
+        number: 300,
+        city: "São Paulo"
+      },
+      geolocation: await getGeolocation({street: "Rua Apucarana", number: 111, city: "São Paulo"})
     }
   ]
 

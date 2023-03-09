@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import * as S from './styled'
-import { filter } from '../../context/clients';
+import { conditionFilter } from '../../context/clients';
 import { useRecoilState } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [filters, setFilters] = useRecoilState(filter);
+  const [filters, setFilters] = useRecoilState(conditionFilter);
 
   const formatNameCondition = useFormatNameCondition();
 
@@ -22,52 +22,6 @@ export function Sidebar() {
 
       setFilters(newFilters)
     }
-
-    // if(condition.checked) {
-      
-    //   if(condition.name !== allNameAndChecked.name && condition.checked) {
-    //     allNameAndChecked.checked = false
-    //   }
-
-    //   let newConditions = conditions.slice(1)
-
-    //   if (condition.name === allNameAndChecked.name){
-    //     newConditions.forEach((condition) => condition.checked = false)
-    //     allNameAndChecked.checked = true
-    //   }
-
-    //   setConditions([{
-    //     name: allNameAndChecked.name,
-    //     checked: allNameAndChecked.checked
-    //   }, ...newConditions])
-
-    // } else {
-    //   const conditionsFalse = conditions.filter(value => value.name === condition.name && condition.checked === false)
-    //   const justCondition = conditionsFalse.at(0)
-
-    //   let newConditionsChange = conditions.slice(1)
-      
-    //   const everyConditionsCheckedFalse = newConditionsChange.every(value => value.checked === false)
-
-    //   if(condition.name !== allNameAndChecked.name && everyConditionsCheckedFalse) {
-    //     allNameAndChecked.checked = true
-    //   }
-
-    //   if(everyConditionsCheckedFalse && allNameAndChecked.checked === false) {
-    //     allNameAndChecked.checked = true
-    //   }
-
-    //   newConditionsChange.forEach(condition => condition.name === justCondition.name ? condition.checked = justCondition.checked : condition.checked)
-
-    //   setConditions([{
-    //     name: allNameAndChecked.name,
-    //     checked: allNameAndChecked.checked
-    //   },...newConditionsChange])
-    // }
-    
-    // setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
-    //   return {name: name}
-    // }))
   }
   
   return (

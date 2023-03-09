@@ -24,7 +24,7 @@ export default function ClientInformation(){
                   (
                         <>
                         <h1>{client.name}</h1>
-                        {client.condition.map((condition, index) => { return (<h2 key={index}>{formatNameCondition(condition.name)};</h2>)})}         
+                        {client.exam.conditions.map((condition, index) => { return (<h2 key={index}>{formatNameCondition(condition.name)};</h2>)})}         
                         </>
                   )
             }
