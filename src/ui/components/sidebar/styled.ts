@@ -237,14 +237,19 @@ export const AddressesFound = styled.div`
 
 export const ButtonAddress = styled.button`
     font-size: 1.6rem;
-    padding: 2rem;
-    background-color: transparent;
+    padding: 1rem;
+    margin-top: 1rem;
+    width: 80%;
+    background-color: #54D3F0;
     border: none;
     cursor: pointer;
+    border-radius: .8rem;
 
     transition: all .3s ease-in-out;
 
-    :hover {
-        opacity: .6
-    }
+    ${props => props.disabled ? css` cursor: default;` : css`
+        :hover {
+            opacity: .6
+        }
+    `}
 `

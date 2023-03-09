@@ -1,6 +1,6 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import * as S from './styled'
-import { conditionFilter, matchedFilterAddresses, runTimeAddressFilter } from '../../context/clients';
+import { conditionFilter, matchedFilterAddresses, addressFilter } from '../../context/clients';
 import { useRecoilState, useRecoilValue } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
@@ -10,10 +10,10 @@ export function Sidebar() {
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const [conditionFilterIsOpened, setConditionFilterIsOpened] = useState<boolean>(false);
   const [addressFilterIsOpened, setAddressFilterIsOpened] = useState<boolean>(false);
-  const [address, setAddress] = useState<string>('');
+  const [buttonAble, setButtonAble] = useState<boolean>(true);
   const [filters, setFilters] = useRecoilState(conditionFilter);
-  const clientAddress = useRecoilValue(matchedFilterAddresses);
-  const [addressFilter, setAddressFilter] = useRecoilState(runTimeAddressFilter)
+  // const [addressFilter, setAddressFilter] = useRecoilState(addressFilter)
+  const InputAddress = useRef<HTMLInputElement>(null)
 
   const formatNameCondition = useFormatNameCondition();
 
@@ -29,15 +29,10 @@ export function Sidebar() {
     }
   }
 
-  const filterByDistrictAndCity = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(!clientAddress.includes(event.target.value)) {
-      setAddress(event.target.value)
-      setAddressFilter(old => [...old, address])
-    }
-
-    if(event.target.value === '') {
-      setAddressFilter([])
-    }
+  const AddAddress = () => {
+    const address = InputAddress.current.value
+    // setAddressFilter(old => [...old, address])
+    console.log(addressFilter)
   }
 
   return (
@@ -100,16 +95,13 @@ export function Sidebar() {
           {
             addressFilterIsOpened ? (
               <S.ContainerFilters>
-                <S.InputSearchAddress onChange={(event) => filterByDistrictAndCity(event)} />
+                <S.InputSearchAddress ref={InputAddress} />
+                <S.ButtonAddress onClick={AddAddress}>Procurar...</S.ButtonAddress>
                 <S.ContainerChipAddress>
                   {/* <ChipAddress onClick={(event) => deleteChip(event)}>teste</ChipAddress> */}
                 </S.ContainerChipAddress>
                 <S.AddressesFound>
-                  {
-                    clientAddress.map((address, index) => (
-                    <S.ButtonAddress key={index}>{address}</S.ButtonAddress>
-                    ))
-                  }
+                  
                 </S.AddressesFound>
               </S.ContainerFilters>
             )

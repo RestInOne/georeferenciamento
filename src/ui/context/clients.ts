@@ -69,7 +69,7 @@ export const matchedFilterAddresses = selector<string[]>({
   key: 'matchedFilterAddresses',
   get: ({get}) => {
     const addressesAvailable = get(clientAddresses)
-    const addressesOnFilter = get(runTimeAddressFilter)
+    const addressesOnFilter = get(addressFilter)
 
     let matchedFilterAddresses : string[] = []
 
@@ -94,8 +94,12 @@ export const matchedFilterAddresses = selector<string[]>({
         })
 
       for(let i = 0; i < lowercasedAvailableAddress.length; i++){
-        if (lowercasedAvailableAddress[i].includes(lowercasedFilterAddress) && !matchedFilterAddresses.find(address => address === lowercasedAvailableAddress[i])){
-            matchedFilterAddresses.push(lowercasedAvailableAddress[i].toUpperCase())
+        if (lowercasedAvailableAddress[i].includes(lowercasedFilterAddress)){  
+            matchedFilterAddresses.forEach(match => {
+              if (!match.includes(lowercasedFilterAddress)){
+                matchedFilterAddresses.push(lowercasedAvailableAddress[i])
+              }
+            })     
         }
       }
     })
