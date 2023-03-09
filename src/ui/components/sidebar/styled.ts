@@ -47,7 +47,7 @@ export const LabelFilter = styled.p`
     transform: rotate(180deg);
 `
 
-export const ArrowLeft = styled(ArrowLeftIcon)<{opened: boolean}>`
+export const ArrowLeft = styled(ArrowLeftIcon)<{ opened: boolean }>`
     width: 2rem;
     height: 2rem;
 
@@ -56,12 +56,10 @@ export const ArrowLeft = styled(ArrowLeftIcon)<{opened: boolean}>`
     ` : ''}
 `
 
-export const ChevronDown = styled(ChevronDownIcon)`
+export const ChevronDown = styled(ChevronDownIcon)<{ opened: boolean }>`
     transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
     
-    [data-state='open'] & { 
-        transform: rotate(180deg); 
-    }
+    ${props => props.opened ? css` transform: rotate(180deg); ` : ''}
 `
 
 export const IconCheck = styled(CheckIcon)`
@@ -184,4 +182,50 @@ export const ScrollThumb = styled(ScrollArea.Thumb)`
     flex: 1;
     background-color: #d4d4d4;
     border-radius: .8rem;
+`
+
+export const TriggerFilter = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.8rem;
+    padding: 1.5rem;
+    cursor: pointer;
+
+    transition: all .3s ease-in-out;
+
+    :hover {
+        opacity: .6;
+    }
+`
+
+export const ContainerFilters = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+
+export const InputSearchAddress = styled.input`
+    border-radius: .5rem;
+    width: 28rem;
+    height: 3.5rem;
+    background-color: transparent;
+    border: .1rem solid #000000;
+    padding: 1rem 1rem;
+    font-size: 2rem;
+`
+
+export const ContainerChipAddress = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+`
+
+export const AddressesFound = styled.div`
+    height: max-content;
+    width: 35rem;
 `
