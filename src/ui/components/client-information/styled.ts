@@ -34,6 +34,10 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
         transform: rotate(180deg);
     `
     }
+
+    @media (max-width: 375px){
+        width: 12rem;
+    }
 `
 
 export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`

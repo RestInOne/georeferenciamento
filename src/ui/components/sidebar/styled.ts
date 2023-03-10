@@ -235,25 +235,6 @@ export const AddressesFound = styled.div`
     align-items: center;
 `
 
-export const ButtonAddress = styled.button`
-    font-size: 1.6rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    width: 80%;
-    background-color: #54D3F0;
-    border: none;
-    cursor: pointer;
-    border-radius: .8rem;
-
-    transition: all .3s ease-in-out;
-
-    ${props => props.disabled ? css` cursor: default;` : css`
-        :hover {
-            opacity: .6
-        }
-    `}
-`
-
 export const ButtonCancel = styled.button`
     font-size: 1.6rem;
     padding: 1rem;
@@ -264,11 +245,5 @@ export const ButtonCancel = styled.button`
     cursor: pointer;
     border-radius: .8rem;
 
-    transition: all .3s ease-in-out;
-
-    ${props => props.disabled ? css` cursor: default;` : css`
-        :hover {
-            opacity: .6
-        }
-    `}
+    transition: all .4s ease-in-out;
 `

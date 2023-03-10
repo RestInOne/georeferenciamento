@@ -77,7 +77,7 @@ export const matchedAddresses = selector<string[]>({
       const addressesInArray : string[] = []
       
       for(let indexCurrent = 0; indexCurrent < addresses.length; indexCurrent++) {
-        addressesInArray.push(addresses[indexCurrent].city, addresses[indexCurrent].district, addresses[indexCurrent].number+'', addresses[indexCurrent].state, addresses[indexCurrent].street)
+        addressesInArray.push(addresses[indexCurrent].city, addresses[indexCurrent].number+'', addresses[indexCurrent].state, addresses[indexCurrent].street)
       }
 
       addressesInArray.forEach(value => {

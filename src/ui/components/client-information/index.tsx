@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition'
-import { clientOnModal, modalIsActive } from '../../context'
+import { clientOnModal, filterModal, modalIsActive } from '../../context'
 import * as S from './styled'
 import { doctorLoggedIn } from '../../context/doctor'
 
@@ -9,12 +9,16 @@ export default function ClientInformation(){
 
     const client = useRecoilValue(clientOnModal)
     const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
+    const setFilterModal = useSetRecoilState(filterModal)
     const formatNameCondition = useFormatNameCondition();
     const doctor = useRecoilValue(doctorLoggedIn)
 
     return (
     <S.Wrapper>
-          <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {setIsOpened(old => !old) }}>
+          <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {
+            setIsOpened(old => !old);
+            setFilterModal(false) 
+            }}>
                {isOpened ? (<S.ArrowRight isOpened={false} />) : (<S.ArrowRight isOpened={true}/>)}
           </S.ButtonOpenOrCloseSidebar>
     
@@ -30,7 +34,6 @@ export default function ClientInformation(){
                         <S.CommonInformation>
                               {client.address.state === undefined ? '' : client.address.state + ', '}  
                               {client.address.city + ', '} 
-                              {client.address.district === undefined ? '' : client.address.district + ', '}
                               {client.address.street + ','} {client.address.number}
                               </S.CommonInformation>
                         <S.CommonInformation>Patologia:</S.CommonInformation>

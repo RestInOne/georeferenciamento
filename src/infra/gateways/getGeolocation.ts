@@ -8,13 +8,9 @@ export const getGeolocation : getGeolocationRepository = async (address: Partial
     let number = address.number+''
     let street = address.street.replace(/ /g, '%20')
     let city = address.city.replace(/ /g, '%20')
-    let district = ''
     let state = ''
     if(address.state){
         state = address.state.replace(/ /g, '%20')
-    }
-    if(address.district){
-        district = address.district.replace(/ /g, '%20')
     }
     
 
@@ -23,7 +19,7 @@ export const getGeolocation : getGeolocationRepository = async (address: Partial
     lat: 0
     }
 
-    const response = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete?text=${number}%20${street}%20${district}%20${city}%20${state}&apiKey=${key}`)
+    const response = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete?text=${number}%20${street}%20${city}%20${state}&apiKey=${key}`)
 
     geolocation.lon = response.data.features[0].properties.lon
     geolocation.lat = response.data.features[0].properties.lat    

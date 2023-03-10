@@ -5,9 +5,10 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
 import ChipAddress from '../chip-address';
+import { filterModal, modalIsActive } from '../../context';
 
 export function Sidebar() {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const [isOpened, setIsOpened] = useRecoilState(filterModal);
   const [conditionFilterIsOpened, setConditionFilterIsOpened] = useState<boolean>(false);
   const [addressFilterIsOpened, setAddressFilterIsOpened] = useState<boolean>(false);
   const [buttonAble, setButtonAble] = useState<boolean>(true);
@@ -16,6 +17,7 @@ export function Sidebar() {
   const [runTimeFilter, setRunTimeFilters] = useRecoilState(runTimeAddressFilter)
   const [currentAddress, setCurrentAddress] = useState<string>('')
   const matched = useRecoilValue(matchedAddresses)
+  const [modalIsOpened, setModalIsOpened] = useRecoilState(modalIsActive)
 
 
 
@@ -47,7 +49,10 @@ export function Sidebar() {
   return (
     <>
       <S.Wrapper>
-        <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
+        <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {
+          setIsOpened(old => !old);
+          setModalIsOpened(false)
+          }}>
           {isOpened ? (<S.ArrowLeft opened={false} />) : (
           <>
             <S.ArrowLeft opened={true} />
