@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
     overflow: hidden;
 `
 
-export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
+export const ButtonOpenOrCloseSidebar = styled.div<{ isopen: boolean }>`
     position: absolute;
     top: 3rem;
     right: 2rem;
@@ -29,7 +29,7 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
         background-color: #DEDBD5;
     }
 
-    ${props => props.isOpen ? 
+    ${props => props.isopen ? 
     css`
         transform: rotate(-180deg);
         right: 38rem;
@@ -215,14 +215,6 @@ export const InputSearchAddress = styled.input`
     border: .1rem solid #000000;
     padding: 1rem 1rem;
     font-size: 2rem;
-`
-
-export const ContainerChipAddress = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
 `
 
 export const AddressesFound = styled.div`

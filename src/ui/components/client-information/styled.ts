@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     overflow: hidden;
 `
 
-export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
+export const ButtonOpenOrCloseSidebar = styled.div<{ isopen: boolean }>`
     position: absolute;
     top: 3rem;
     left: 2rem;
@@ -24,7 +24,7 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
         background-color: #DEDBD5;
     }
 
-    ${props => props.isOpen ? 
+    ${props => props.isopen ? 
     css`
         transform: rotate(-180deg);
         left: 38rem;
@@ -65,11 +65,11 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     transition: transform .3s ease-in-out;
 `
 
-export const ArrowRight = styled(ArrowRightIcon)<{isOpened: boolean}>`
+export const ArrowRight = styled(ArrowRightIcon)<{isopened: boolean}>`
     width: 2rem;
     height: 2rem;
 
-    ${props => props.isOpened ? css`
+    ${props => props.isopened ? css`
     transform: rotate(0.5turn); 
     ` : ''}
 `

@@ -4,22 +4,18 @@ import { conditionFilter, addressFilter, runTimeAddressFilter, matchedAddresses 
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
-import ChipAddress from '../chip-address';
 import { filterModal, modalIsActive } from '../../context';
 
 export function Sidebar() {
   const [isOpened, setIsOpened] = useRecoilState(filterModal);
   const [conditionFilterIsOpened, setConditionFilterIsOpened] = useState<boolean>(false);
   const [addressFilterIsOpened, setAddressFilterIsOpened] = useState<boolean>(false);
-  const [buttonAble, setButtonAble] = useState<boolean>(true);
   const [filters, setFilters] = useRecoilState(conditionFilter);
   const [addressesFilter, setAddressFilters] = useRecoilState(addressFilter)
   const [runTimeFilter, setRunTimeFilters] = useRecoilState(runTimeAddressFilter)
   const [currentAddress, setCurrentAddress] = useState<string>('')
   const matched = useRecoilValue(matchedAddresses)
   const [modalIsOpened, setModalIsOpened] = useRecoilState(modalIsActive)
-
-
 
   const formatNameCondition = useFormatNameCondition();
 
@@ -49,7 +45,7 @@ export function Sidebar() {
   return (
     <>
       <S.Wrapper>
-        <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {
+        <S.ButtonOpenOrCloseSidebar isopen={isOpened} onClick={() => {
           setIsOpened(old => !old);
           setModalIsOpened(false)
           }}>
@@ -111,10 +107,8 @@ export function Sidebar() {
               <S.ContainerFilters>
                 <S.InputSearchAddress onChange={(e) => checkAddress(e)} value={currentAddress}/>
                 <S.ButtonCancel onClick={clearAddressFilter}>Limpar Filtro</S.ButtonCancel>
-                <S.ContainerChipAddress>
-                </S.ContainerChipAddress>
                 <S.AddressesFound>
-                  <h3>Os endereços que batem são:</h3>
+                  <h3>Endereços correspondentes:</h3>
                   {matched.map((match, index) => {
                     return (<p key={index}>{match}</p>)
                   })}
