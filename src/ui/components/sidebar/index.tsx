@@ -1,7 +1,7 @@
 import React, { forwardRef, useRef, useState } from 'react';
 import * as S from './styled'
-import { conditionFilter, addressFilter } from '../../context/clients';
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { conditionFilter, addressFilter, runTimeAddressFilter, matchedAddresses } from '../../context/clients';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
 import ChipAddress from '../chip-address';
@@ -13,7 +13,9 @@ export function Sidebar() {
   const [buttonAble, setButtonAble] = useState<boolean>(true);
   const [filters, setFilters] = useRecoilState(conditionFilter);
   const [addressesFilter, setAddressFilters] = useRecoilState(addressFilter)
-  const InputAddress = useRef<HTMLInputElement>(null);
+  const [runTimeFilter, setRunTimeFilters] = useRecoilState(runTimeAddressFilter)
+  const [currentAddress, setCurrentAddress] = useState<string>('')
+  const matched = useRecoilValue(matchedAddresses)
 
   const formatNameCondition = useFormatNameCondition();
 
@@ -29,16 +31,18 @@ export function Sidebar() {
     }
   }
 
-  const AddAddress = () => {
-    const address = InputAddress.current.value
-    setAddressFilters(address)
-    console.log(addressFilter)
-    InputAddress.current.value = ''
+  const checkAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAddress(event.target.value)
+    setRunTimeFilters(old => [...old, currentAddress])
+  }
+
+  const addAddress = () => {
+    setAddressFilters(old => [...old, ...runTimeFilter])
   }
 
   const clearAddressFilter = () => {
-    InputAddress.current.value = ''
-    setAddressFilters('')
+    setRunTimeFilters([])
+    setAddressFilters([])
   }
 
   return (
@@ -101,11 +105,17 @@ export function Sidebar() {
           {
             addressFilterIsOpened ? (
               <S.ContainerFilters>
-                <S.InputSearchAddress ref={InputAddress} />
-                <S.ButtonAddress onClick={AddAddress}>Procurar...</S.ButtonAddress>
+                <S.InputSearchAddress onChange={(e) => checkAddress(e)} value={currentAddress}/>
+                <S.ButtonAddress onClick={addAddress}>Procurar...</S.ButtonAddress>
                 <S.ButtonCancel onClick={clearAddressFilter}>Limpar Filtro</S.ButtonCancel>
                 <S.ContainerChipAddress>
                 </S.ContainerChipAddress>
+                <S.AddressesFound>
+                  <h3>Os endereços que batem são:</h3>
+                  {matched.map((match, index) => {
+                    return (<p key={index}>{match}</p>)
+                  })}
+                </S.AddressesFound>
               </S.ContainerFilters>
             )
             :

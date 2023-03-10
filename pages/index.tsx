@@ -57,7 +57,9 @@ export const getServerSideProps : GetServerSideProps = async () => {
       address: {
         street: "Rua Francisco Rodrigues Seckler",
         number: 111,
-        city: "São Paulo"
+        city: "São Paulo",
+        district: "Vila Taquari",
+        state: "São Paulo"
       },
       geolocation: await getGeolocation({street: "Rua Francisco Rodrigues Seckler", number: 111, city: "São Paulo"})
     },
@@ -80,7 +82,9 @@ export const getServerSideProps : GetServerSideProps = async () => {
       address: {
         street: "Rua Virgínia Ferni",
         number: 400,
-        city: "São Paulo"
+        city: "São Paulo",
+        district: "Cohab 2",
+        state: "São Paulo"
       },
       geolocation: await getGeolocation({street: "Rua Virgínia Ferni", number: 400, city: "São Paulo"})
     },
@@ -106,7 +110,9 @@ export const getServerSideProps : GetServerSideProps = async () => {
       address: {
         street: "Rua Apucarana",
         number: 300,
-        city: "São Paulo"
+        city: "São Paulo",
+        district: "Carrão",
+        state: "São Paulo"
       },
       geolocation: await getGeolocation({street: "Rua Apucarana", number: 111, city: "São Paulo"})
     }
