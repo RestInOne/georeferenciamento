@@ -1,33 +1,49 @@
 import { useState } from 'react'
-import { useRecoilValue } from 'recoil'
-import { clientOnModal } from '../../context'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import useFormatNameCondition from '../../hooks/useFormatNameCondition'
+import { clientOnModal, filterModal, modalIsActive } from '../../context'
 import * as S from './styled'
+import { doctorLoggedIn } from '../../context/doctor'
 
-interface IClientInformation {
-    visible: boolean
-}
-
-
-export default function ClientInformation({visible}: IClientInformation){
+export default function ClientInformation(){
 
     const client = useRecoilValue(clientOnModal)
-    const [isOpened, setIsOpened] = useState<boolean>(false);
+    const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
+    const setFilterModal = useSetRecoilState(filterModal)
+    const formatNameCondition = useFormatNameCondition();
+    const doctor = useRecoilValue(doctorLoggedIn)
 
-    return visible ? <S.Wrapper>
-    <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {setIsOpened(old => !old) }}>
-         {isOpened ? (<S.ArrowRight />) : (<S.ArrowLeft />)}
-    </S.ButtonOpenOrCloseSidebar>
-    <S.WrapperConditions openOrCloseSide={isOpened}>
-         <h1>{client.name}</h1>
-         {client.condition.map((condition, index) => { return (<h2 key={index}>{condition.name};</h2>)})}
-    </S.WrapperConditions>
-    </S.Wrapper> : 
+    return (
     <S.Wrapper>
-         <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {setIsOpened(old => !old) }}>
-         {isOpened ? (<S.ArrowRight />) : (<S.ArrowLeft />)}
-         </S.ButtonOpenOrCloseSidebar>
-         <S.WrapperConditions openOrCloseSide={isOpened}>
-         <h1>Nenhum paciente selecionado</h1>
-         </S.WrapperConditions>
-    </S.Wrapper>
+          <S.ButtonOpenOrCloseSidebar isopen={isOpened} onClick={() => {
+            setIsOpened(old => !old);
+            setFilterModal(false) 
+            }}>
+               {isOpened ? (<S.ArrowRight isopened={false} />) : (<S.ArrowRight isopened={true}/>)}
+          </S.ButtonOpenOrCloseSidebar>
+    
+          <S.WrapperConditions openOrCloseSide={isOpened}>
+            {
+                  client === null ?
+                  <h1>Nenhum paciente selecionado</h1>
+                  :
+                  (
+                        <S.Informations>
+                        <S.ClientName>{client.name}</S.ClientName>
+                        <S.CommonInformation>CPF: {client.cpf}</S.CommonInformation>
+                        <S.CommonInformation>
+                              {client.address.state === undefined ? '' : client.address.state + ', '}  
+                              {client.address.city + ', '} 
+                              {client.address.street + ','} {client.address.number}
+                              </S.CommonInformation>
+                        <S.CommonInformation>Patologia:</S.CommonInformation>
+                        <S.CommonInformation>
+                              {client.exam.conditions.map((condition, index) => { return (<S.CommonInformation key={index}>{formatNameCondition(condition.name)}</S.CommonInformation>)})}
+                        </S.CommonInformation>
+                        <S.DoctorName>{doctor.name}</S.DoctorName>        
+                        </S.Informations>
+                  )
+            }
+          </S.WrapperConditions>
+    </S.Wrapper>)
 }

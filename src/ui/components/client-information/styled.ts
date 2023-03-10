@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     overflow: hidden;
 `
 
-export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
+export const ButtonOpenOrCloseSidebar = styled.div<{ isopen: boolean }>`
     position: absolute;
     top: 3rem;
     left: 2rem;
@@ -16,7 +16,7 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
     padding: 1.5rem;
     cursor: pointer;
     border-radius: 0.8rem;
-    z-index: 11;
+    z-index: 10;
 
     transition: all .3s ease-in-out;
 
@@ -24,7 +24,7 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
         background-color: #DEDBD5;
     }
 
-    ${props => props.isOpen ? 
+    ${props => props.isopen ? 
     css`
         transform: rotate(-180deg);
         left: 38rem;
@@ -34,20 +34,23 @@ export const ButtonOpenOrCloseSidebar = styled.div<{ isOpen: boolean }>`
         transform: rotate(180deg);
     `
     }
+
+    @media (max-width: 375px){
+        width: 12rem;
+    }
 `
 
 export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;
     flex-direction: column;
     background-color: #DEDBD5;
     align-items: center;
     width: 35rem;
     height: max-content;
     font-size: 1.5rem;
-    z-index: 5;
+    z-index: 4;
     box-shadow: 6px 10px 16px -3px rgba(0,0,0,0.75);
     border-radius: .8rem;
     padding: 1.5rem;
@@ -62,50 +65,35 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     transition: transform .3s ease-in-out;
 `
 
-export const ScrollRoot = styled(ScrollArea.Root)`
-    width: 31rem;
-    height: 60.5rem;
-    overflow: hidden;
-`
+export const ArrowRight = styled(ArrowRightIcon)<{isopened: boolean}>`
+    width: 2rem;
+    height: 2rem;
 
-export const ScrollView = styled(ScrollArea.Viewport)`
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
+    ${props => props.isopened ? css`
+    transform: rotate(0.5turn); 
+    ` : ''}
+`
+export const Informations = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 2rem;
 `
 
-export const ScrollBar = styled(ScrollArea.Scrollbar)`
+export const ClientName = styled.h3`
+    font-size: 32px;
+    font-weight: 700;
+`
+export const CommonInformation = styled.p`
+    font-size: 18px;
+`
+
+export const DoctorName = styled.em`
+    font-size: 20px;
+    font-weight: 400;
+`
+export const ConditionsWrapper = styled.div`
     display: flex;
-    user-select: none;
-    touch-action: none;
-    padding: .2rem;
     flex-direction: column;
-    background-color: #B8B5B0;
-    border-radius: .8rem;
-    
-    &:hover {
-    }
-
-    &[data-orientation='vertical'] {
-        width: 1rem;
-    }
-`
-
-export const ScrollThumb = styled(ScrollArea.Thumb)`
-    flex: 1;
-    background-color: #d4d4d4;
-    border-radius: .8rem;
-`
-
-
-
-export const ArrowLeft = styled(ArrowLeftIcon)`
-    width: 2rem;
-    height: 2rem;
-`
-
-export const ArrowRight = styled(ArrowRightIcon)`
-    width: 2rem;
-    height: 2rem;
+    gap: 0.8rem
 `

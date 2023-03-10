@@ -6,7 +6,7 @@ import { RecoilRoot } from 'recoil'
 const theme: DefaultTheme = {
   colors: {
     primary: '#111',
-    secondary: '#0070f3',
+    secondary: '#0070f3', 
   },
 }
 

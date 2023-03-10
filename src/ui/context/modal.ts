@@ -10,3 +10,8 @@ export const modalIsActive = atom<boolean>({
     key: 'modalIsActive',
     default: false
 })
+
+export const filterModal = atom<boolean>({
+    key: 'filterModal',
+    default: false
+})

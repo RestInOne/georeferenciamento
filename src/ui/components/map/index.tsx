@@ -10,64 +10,52 @@ import Feature from 'ol/Feature';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import { createPointWithColor } from './createCircle'
-import { getColorByCondition } from '../../../infra/gateways/getColorByCondition'
+import { getColorByCondition } from '../../../infra/util/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
-import { useSetRecoilState } from 'recoil'
-import { clientOnModal, modalIsActive } from '../../context'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { clientOnModal, filteredClients as newFilteredClients, modalIsActive } from '../../context'
 
 interface IMapWithPins {
   filteredClients: IClient[]
 } 
 
-export default function MapComponent(props: IMapWithPins) {
+export default function MapComponent() {
   
   const mapRef = useRef<HTMLDivElement>(null);
   const setClientOn = useSetRecoilState(clientOnModal)
-  const setModal = useSetRecoilState(modalIsActive)
-
+  const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
+  const filteredClients = useRecoilValue(newFilteredClients)
 
   useEffect(() => {
-
-    const features : Feature[] = []
-
-    console.log(props.filteredClients)
-
-    if (props.filteredClients.length > 0){
-    for (let i = 0; i < props.filteredClients.length; i ++){
-      let center : [number, number] = [props.filteredClients[i].geolocation.lon, props.filteredClients[i].geolocation.lat]
-      props.filteredClients[i].condition.forEach(condition => { 
-        features.push(
-        createPointWithColor(
-        center,
-        12,
-        getColorByCondition(condition.name),
-        props.filteredClients[i]
-      ))
-      })
-    } 
-  }
-    const vectorSource = new VectorSource({
-      features: [...features],
-    });
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,   
-    });
-
-
 
     const map = new Map({
       target: mapRef.current!,
       layers: [
         new TileLayer({
           source: new OSM(),
-        }),
-        vectorLayer
+        })
       ],
       view: new View({
-        center: fromLonLat([0, 0]),
+        center: fromLonLat([-51.31668, -14.4095261]),
         zoom: 4,
       }),
     });
+
+    
+
+    if (filteredClients.length > 0){
+    for (let i = 0; i < filteredClients.length; i ++){
+      filteredClients[i].exam.conditions.forEach((condition, index) => { 
+        createPointWithColor(
+          [filteredClients[i].geolocation.lon - index*0.00001, filteredClients[i].geolocation.lat],
+        12,
+        getColorByCondition(condition.name),
+        filteredClients[i],
+        map
+      )
+      })
+    } 
+  }
 
     map.addEventListener('click', (evt: MapBrowserEvent<any>) => {
 
@@ -75,18 +63,28 @@ export default function MapComponent(props: IMapWithPins) {
       const [feature] = evt.map.getFeaturesAtPixel(evt.pixel)
       const client = feature.get('client')
       setClientOn(client)
-      setModal(true)      
+      setIsOpened(true)
      } else {
-      setModal(false)
+      setClientOn(null)
+      setIsOpened(false)
      }
     })
 
+    map.on('pointermove', function(event) {
+      let pixel = map.getEventPixel(event.originalEvent);
+      let hit = map.hasFeatureAtPixel(pixel)
+      map.getViewport().style.cursor = hit ? 'pointer' : '';
+    })
+
+    map.on('pointerdrag', function(event) {
+        map.getViewport().style.cursor = 'grab'
+    })
+
     return () => { 
-      
       map.setTarget(null)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.filteredClients]);
+  }, [filteredClients]);
   
 
   return <S.MapContainer ref={mapRef} />

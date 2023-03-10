@@ -1,185 +1,57 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import * as S from './styled'
-import { filter } from '../../context/clients';
-import { useRecoilState, useSetRecoilState } from 'recoil'
-
-function capitalizeWord(str: string) {
-  const words = str.split(' ');
-
-  for (let i = 0; i < words.length; i++) {
-    let word = words[i];
-    words[i] = word.charAt(0).toUpperCase() + word.slice(1);
-  }
-
-  return words.join(' ');
-}
+import { conditionFilter, addressFilter, runTimeAddressFilter, matchedAddresses } from '../../context/clients';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import useFormatNameCondition from '../../hooks/useFormatNameCondition';
+import { ConditionName } from '../../../domain';
+import { filterModal, modalIsActive } from '../../context';
 
 export function Sidebar() {
-  const [isOpened, setIsOpened] = useState<boolean>(false);
-  const [filters, setFilters] = useRecoilState(filter);
-  const [conditions, setConditions] = useState([
-    {
-      name: 'todos5',
-      checked: true,
-    },
-    {
-      name: 'resistencia_insulina_leve',
-      checked: false,
-    },
-    {
-      name: 'resistência_Insulina_Moderada',
-      checked: false,
-    },
-    {
-      name: 'resistência_Insulina_Severo5',
-      checked: false,
-    },
-    {
-      name: 'diabético',
-      checked: false,
-    },
-    {
-      name: 'risco_amputação_leve',
-      checked: false,
-    },
-    {
-      name: 'risco_moderado',
-      checked: false,
-    },
-    {
-      name: 'risco_severo5',
-      checked: false,
-    },
-    {
-      name: 'doente_metabólico_severo5',
-      checked: false,
-    },
-    {
-      name: 'hipertenso_leve',
-      checked: false,
-    },
-    {
-      name: 'hipertenso_moderado',
-      checked: false,
-    },
-    {
-      name: 'hipertenso_severo',
-      checked: false,
-    },
-    {
-      name: 'risco_pico_hipertensivo',
-      checked: false,
-    },
-    {
-      name: 'risco_infarto_e_AVC',
-      checked: false,
-    },
-    {
-      name: 'risco_evento_cardíaco_grave5',
-      checked: false,
-    },
-    {
-      name: 'sobrepeso',
-      checked: false,
-    },
-    {
-      name: 'obesidade_1',
-      checked: false,
-    },
-    {
-      name: 'obesidade_2',
-      checked: false,
-    },
-    {
-      name: 'obesidade_35',
-      checked: false,
-    },
-    {
-      name: 'stress_elevado',
-      checked: false,
-    },
-    {
-      name: 'stress_severo5',
-      checked: false,
-    },
-    {
-      name: 'síndrome_vagal5',
-      checked: false,
-    },
-    {
-      name: 'TDAH5',
-      checked: false,
-    },
-    {
-      name: 'depressão_leve_ou_moderada',
-      checked: false,
-    },
-    {
-      name: 'depressão_severa',
-      checked: false,
-    }
-  ])
+  const [isOpened, setIsOpened] = useRecoilState(filterModal);
+  const [conditionFilterIsOpened, setConditionFilterIsOpened] = useState<boolean>(false);
+  const [addressFilterIsOpened, setAddressFilterIsOpened] = useState<boolean>(false);
+  const [filters, setFilters] = useRecoilState(conditionFilter);
+  const [addressesFilter, setAddressFilters] = useRecoilState(addressFilter)
+  const [runTimeFilter, setRunTimeFilters] = useRecoilState(runTimeAddressFilter)
+  const [currentAddress, setCurrentAddress] = useState<string>('')
+  const matched = useRecoilValue(matchedAddresses)
+  const [modalIsOpened, setModalIsOpened] = useRecoilState(modalIsActive)
 
-  const handleChecked = (event: React.ChangeEvent<HTMLInputElement>, condition: typeof conditions[0]) => {
-    const isChecked = event.target.checked;
-    condition.checked = isChecked;
-    const all = conditions.filter(value => value.name === 'todos');
-    const allNameAndChecked = all.at(0);
+  const formatNameCondition = useFormatNameCondition();
 
-    if(condition.checked) {
-      
-      if(condition.name !== allNameAndChecked.name && condition.checked) {
-        allNameAndChecked.checked = false
-      }
-
-      let newConditions = conditions.slice(1)
-
-      if (condition.name === allNameAndChecked.name){
-        newConditions.forEach((condition) => condition.checked = false)
-        allNameAndChecked.checked = true
-      }
-
-      setConditions([{
-        name: allNameAndChecked.name,
-        checked: allNameAndChecked.checked
-      }, ...newConditions])
-
+  const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if(event.target.checked) {
+      setFilters(old => [...old, (event.target.value as any)])
     } else {
-      const conditionsFalse = conditions.filter(value => value.name === condition.name && condition.checked === false)
-      const justCondition = conditionsFalse.at(0)
+      const newFilters = [...filters]
 
-      let newConditionsChange = conditions.slice(1)
-      
-      const everyConditionsCheckedFalse = newConditionsChange.every(value => value.checked === false)
+      newFilters.splice(newFilters.findIndex((item: any) => item === event.target.value), 1)
 
-      if(condition.name !== allNameAndChecked.name && everyConditionsCheckedFalse) {
-        allNameAndChecked.checked = true
-      }
-
-      if(everyConditionsCheckedFalse && allNameAndChecked.checked === false) {
-        allNameAndChecked.checked = true
-      }
-
-      newConditionsChange.forEach(condition => condition.name === justCondition.name ? condition.checked = justCondition.checked : condition.checked)
-
-      setConditions([{
-        name: allNameAndChecked.name,
-        checked: allNameAndChecked.checked
-      },...newConditionsChange])
+      setFilters(newFilters)
     }
-    
-    setFilters(conditions.filter(c => c.checked === true).map(({name, checked}) => {
-      return {name: name}
-    }))
   }
-  
+
+  const checkAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAddress(event.target.value)
+    setRunTimeFilters(old => [...old, currentAddress])
+  }
+
+  const clearAddressFilter = () => {
+    setRunTimeFilters([])
+    setAddressFilters([])
+    setCurrentAddress('')
+  }
+
   return (
     <>
       <S.Wrapper>
-        <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => setIsOpened(old => !old)}>
-          {isOpened ? (<S.ArrowLeft />) : (
+        <S.ButtonOpenOrCloseSidebar isopen={isOpened} onClick={() => {
+          setIsOpened(old => !old);
+          setModalIsOpened(false)
+          }}>
+          {isOpened ? (<S.ArrowLeft opened={false} />) : (
           <>
-            <S.ArrowRight />
+            <S.ArrowLeft opened={true} />
             <S.LabelFilter>Abrir o Filtro</S.LabelFilter>
           </>
           )}
@@ -188,31 +60,64 @@ export function Sidebar() {
 
       <S.Wrapper>
         <S.WrapperConditions openOrCloseSide={isOpened}>
-          <S.LabelTitle>Selecione uma Condição:</S.LabelTitle>
-          <S.ScrollRoot>
-            <S.ScrollView>
-              <S.Container>
-                {
-                  conditions.map((condition, index, conditionArray) => {
-                    condition.name = condition.name.replace('5', '')
+          <S.LabelTitle>Selecione como quer Filtrar:</S.LabelTitle>
+          <S.TriggerFilter onClick={() => setConditionFilterIsOpened(old => !old)}>
+            <span>Condições</span>
+            <S.ChevronDown aria-hidden opened={conditionFilterIsOpened}/>
+          </S.TriggerFilter>
+          {
+            conditionFilterIsOpened ? (
+              <S.ContainerFilters>
+                <S.ScrollRoot>
+                  <S.ScrollView>
+                    <S.Container>
+                      {
+                        Object.keys(ConditionName).map((key, index) => {
+                          let condition = ConditionName[key]
 
-                    return (
-                      <React.Fragment key={index}>
-                        <S.Flex>
-                          <S.Checkbox type="checkbox" name={condition.name} checked={condition.checked} onChange={(event) => handleChecked(event, condition)} />
-                          <S.Label>{capitalizeWord(condition.name.replace(/_/g, ' '))}</S.Label>
-                        </S.Flex>
-                        {conditionArray[index].name.endsWith("5") ? (<S.Separator />) : (<></>)}
-                      </React.Fragment>
-                    )
-                  })
-                }
-              </S.Container>
-            </S.ScrollView>
-            <S.ScrollBar orientation='vertical'>
-              <S.ScrollThumb />
-            </S.ScrollBar>
-          </S.ScrollRoot>
+                          return (
+                            <React.Fragment key={index}>
+                              <S.Flex>
+                                <S.Checkbox type="checkbox" value={condition} onChange={(event) => handleChecked(event)} />
+                                <S.Label>{formatNameCondition(condition)}</S.Label>
+                              </S.Flex>
+                              {ConditionName[key].endsWith("5") ? (<S.Separator />) : (<></>)}
+                            </React.Fragment>
+                          )
+                        })
+                      }
+                    </S.Container>
+                  </S.ScrollView>
+                  <S.ScrollBar orientation='vertical'>
+                    <S.ScrollThumb />
+                  </S.ScrollBar>
+                </S.ScrollRoot>
+              </S.ContainerFilters>
+            ) 
+            : 
+            <></>
+          }
+
+          <S.TriggerFilter onClick={() => setAddressFilterIsOpened(old => !old)}>
+            <span>Endereço</span>
+            <S.ChevronDown aria-hidden opened={addressFilterIsOpened}/>
+          </S.TriggerFilter>
+          {
+            addressFilterIsOpened ? (
+              <S.ContainerFilters>
+                <S.InputSearchAddress onChange={(e) => checkAddress(e)} value={currentAddress}/>
+                <S.ButtonCancel onClick={clearAddressFilter}>Limpar Filtro</S.ButtonCancel>
+                <S.AddressesFound>
+                  <h3>Endereços correspondentes:</h3>
+                  {matched.map((match, index) => {
+                    return (<p key={index}>{match}</p>)
+                  })}
+                </S.AddressesFound>
+              </S.ContainerFilters>
+            )
+            :
+            <></>
+          }
         </S.WrapperConditions>
       </S.Wrapper>
     </>
