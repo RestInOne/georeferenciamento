@@ -12,56 +12,50 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { createPointWithColor } from './createCircle'
 import { getColorByCondition } from '../../../infra/util/getColorByCondition'
 import { MapBrowserEvent } from 'ol'
-import { useRecoilState, useSetRecoilState } from 'recoil'
-import { clientOnModal, modalIsActive } from '../../context'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { clientOnModal, filteredClients as newFilteredClients, modalIsActive } from '../../context'
 
 interface IMapWithPins {
   filteredClients: IClient[]
 } 
 
-export default function MapComponent(props: IMapWithPins) {
+export default function MapComponent() {
   
   const mapRef = useRef<HTMLDivElement>(null);
   const setClientOn = useSetRecoilState(clientOnModal)
   const [isOpened, setIsOpened] = useRecoilState(modalIsActive)
+  const filteredClients = useRecoilValue(newFilteredClients)
 
   useEffect(() => {
-
-    const features : Feature[] = []
-
-    if (props.filteredClients.length > 0){
-    for (let i = 0; i < props.filteredClients.length; i ++){
-      props.filteredClients[i].exam.conditions.forEach((condition, index) => { 
-        features.push(
-        createPointWithColor(
-          [props.filteredClients[i].geolocation.lon - index*0.00001, props.filteredClients[i].geolocation.lat],
-        12,
-        getColorByCondition(condition.name),
-        props.filteredClients[i]
-      ))
-      })
-    } 
-  }
-    const vectorSource = new VectorSource({
-      features: [...features],
-    });
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,   
-    });
 
     const map = new Map({
       target: mapRef.current!,
       layers: [
         new TileLayer({
           source: new OSM(),
-        }),
-        vectorLayer
+        })
       ],
       view: new View({
         center: fromLonLat([-51.31668, -14.4095261]),
         zoom: 4,
       }),
     });
+
+    
+
+    if (filteredClients.length > 0){
+    for (let i = 0; i < filteredClients.length; i ++){
+      filteredClients[i].exam.conditions.forEach((condition, index) => { 
+        createPointWithColor(
+          [filteredClients[i].geolocation.lon - index*0.00001, filteredClients[i].geolocation.lat],
+        12,
+        getColorByCondition(condition.name),
+        filteredClients[i],
+        map
+      )
+      })
+    } 
+  }
 
     map.addEventListener('click', (evt: MapBrowserEvent<any>) => {
 
@@ -90,7 +84,7 @@ export default function MapComponent(props: IMapWithPins) {
       map.setTarget(null)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.filteredClients]);
+  }, [filteredClients]);
   
 
   return <S.MapContainer ref={mapRef} />

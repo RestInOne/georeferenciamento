@@ -17,6 +17,8 @@ export function Sidebar() {
   const [currentAddress, setCurrentAddress] = useState<string>('')
   const matched = useRecoilValue(matchedAddresses)
 
+
+
   const formatNameCondition = useFormatNameCondition();
 
   const handleChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,11 +36,6 @@ export function Sidebar() {
   const checkAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentAddress(event.target.value)
     setRunTimeFilters(old => [...old, currentAddress])
-  }
-
-  const addAddress = () => {
-    setAddressFilters(old => [...old, currentAddress])
-    console.log(addressFilter)
   }
 
   const clearAddressFilter = () => {
@@ -108,7 +105,6 @@ export function Sidebar() {
             addressFilterIsOpened ? (
               <S.ContainerFilters>
                 <S.InputSearchAddress onChange={(e) => checkAddress(e)} value={currentAddress}/>
-                <S.ButtonAddress onClick={addAddress}>Procurar...</S.ButtonAddress>
                 <S.ButtonCancel onClick={clearAddressFilter}>Limpar Filtro</S.ButtonCancel>
                 <S.ContainerChipAddress>
                 </S.ContainerChipAddress>

@@ -107,7 +107,7 @@ export const filteredAddressClients = selector<IClient[]>({
   key: 'filteredAddressClients',
   get: ({get}) => {
     const client = get(clients)
-    const filter = get(addressFilter)
+    const filter = get(matchedAddresses)
 
     let filteredAddressClients : IClient[] = []
 
@@ -115,15 +115,17 @@ export const filteredAddressClients = selector<IClient[]>({
       client.forEach((client, index, clientsArray) => {
         let keys = Object.keys(client.address)
         keys.forEach(key => {
-          if (client.address[`${key}`] === filter){
-            if(!filteredAddressClients.includes(clientsArray[index])){
-            filteredAddressClients.push(clientsArray[index])  
-           } else {
-            if (filteredAddressClients.includes(clientsArray[index])){
-              const index = filteredAddressClients.findIndex(address => address === clientsArray[index])
-              filteredAddressClients.splice(index, 1)
-            }
-           }}
+          for (let i = 0; i < filter.length; i++) {
+            if (client.address[`${key}`] === filter[i]){
+              if(!filteredAddressClients.includes(clientsArray[index])){
+              filteredAddressClients.push(clientsArray[index])  
+             } else {
+              if (filteredAddressClients.includes(clientsArray[index])){
+                const foundedIndex = filteredAddressClients.findIndex(address => address === clientsArray[index])
+                filteredAddressClients.splice(foundedIndex, 1)
+              }
+             }}
+          }
         })
       })
     } else {
@@ -140,6 +142,7 @@ export const filteredClients = selector<IClient[]>({
     const client = get(clients)
     const conditions = get(filteredConditionClients)
     const addresses = get(filteredAddressClients)
+    const conditionsFilter = get(conditionFilter)
 
     let filteredClients : IClient[] = []
 
@@ -149,8 +152,13 @@ export const filteredClients = selector<IClient[]>({
       for(let i = 0; i < conditions.length; i++){
         filteredClients.push(addresses.find(client => client === conditions[i]))
       }
-    } else if (conditions.length < 0 && addresses.length > 0) {
-      filteredClients = addresses
+    } else if (!conditions.length && addresses.length > 0) {
+
+      if(conditionsFilter.length > 0){
+        filteredClients = []
+      } else {
+       filteredClients = addresses
+      }
     } else {
       filteredClients = conditions
     }
