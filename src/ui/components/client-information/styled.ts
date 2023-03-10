@@ -61,11 +61,11 @@ export const WrapperConditions = styled.div<{ openOrCloseSide: boolean }>`
     transition: transform .3s ease-in-out;
 `
 
-export const ArrowRight = styled(ArrowRightIcon)<{opened: boolean}>`
+export const ArrowRight = styled(ArrowRightIcon)<{isOpened: boolean}>`
     width: 2rem;
     height: 2rem;
 
-    ${props => props.opened ? css`
+    ${props => props.isOpened ? css`
     transform: rotate(0.5turn); 
     ` : ''}
 `

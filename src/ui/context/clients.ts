@@ -57,7 +57,7 @@ export const filteredConditionClients = selector<IClient[] | null>({
 
 export const addressFilter = atom<string[]>({
   key: 'addressFilter',
-  default: ['']
+  default: []
 })
 
 export const runTimeAddressFilter = atom<string[]>({
@@ -126,6 +126,8 @@ export const filteredAddressClients = selector<IClient[]>({
            }}
         })
       })
+    } else {
+      filteredAddressClients = []
     }
 
     return filteredAddressClients

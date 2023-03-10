@@ -15,7 +15,7 @@ export default function ClientInformation(){
     return (
     <S.Wrapper>
           <S.ButtonOpenOrCloseSidebar isOpen={isOpened} onClick={() => {setIsOpened(old => !old) }}>
-               {isOpened ? (<S.ArrowRight opened={false} />) : (<S.ArrowRight opened={true}/>)}
+               {isOpened ? (<S.ArrowRight isOpened={false} />) : (<S.ArrowRight isOpened={true}/>)}
           </S.ButtonOpenOrCloseSidebar>
     
           <S.WrapperConditions openOrCloseSide={isOpened}>
