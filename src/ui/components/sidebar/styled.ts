@@ -253,3 +253,22 @@ export const ButtonAddress = styled.button`
         }
     `}
 `
+
+export const ButtonCancel = styled.button`
+    font-size: 1.6rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    width: 80%;
+    background-color: #FC3045;
+    border: none;
+    cursor: pointer;
+    border-radius: .8rem;
+
+    transition: all .3s ease-in-out;
+
+    ${props => props.disabled ? css` cursor: default;` : css`
+        :hover {
+            opacity: .6
+        }
+    `}
+`

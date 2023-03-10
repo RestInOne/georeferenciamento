@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useState } from 'react';
 import * as S from './styled'
-import { conditionFilter, matchedFilterAddresses, addressFilter } from '../../context/clients';
+import { conditionFilter, addressFilter } from '../../context/clients';
 import { useRecoilState, useRecoilValue } from 'recoil'
 import useFormatNameCondition from '../../hooks/useFormatNameCondition';
 import { ConditionName } from '../../../domain';
@@ -12,8 +12,8 @@ export function Sidebar() {
   const [addressFilterIsOpened, setAddressFilterIsOpened] = useState<boolean>(false);
   const [buttonAble, setButtonAble] = useState<boolean>(true);
   const [filters, setFilters] = useRecoilState(conditionFilter);
-  // const [addressFilter, setAddressFilter] = useRecoilState(addressFilter)
-  const InputAddress = useRef<HTMLInputElement>(null)
+  const [addressesFilter, setAddressFilters] = useRecoilState(addressFilter)
+  const InputAddress = useRef<HTMLInputElement>(null);
 
   const formatNameCondition = useFormatNameCondition();
 
@@ -31,8 +31,14 @@ export function Sidebar() {
 
   const AddAddress = () => {
     const address = InputAddress.current.value
-    // setAddressFilter(old => [...old, address])
+    setAddressFilters(address)
     console.log(addressFilter)
+    InputAddress.current.value = ''
+  }
+
+  const clearAddressFilter = () => {
+    InputAddress.current.value = ''
+    setAddressFilters('')
   }
 
   return (
@@ -97,12 +103,9 @@ export function Sidebar() {
               <S.ContainerFilters>
                 <S.InputSearchAddress ref={InputAddress} />
                 <S.ButtonAddress onClick={AddAddress}>Procurar...</S.ButtonAddress>
+                <S.ButtonCancel onClick={clearAddressFilter}>Limpar Filtro</S.ButtonCancel>
                 <S.ContainerChipAddress>
-                  {/* <ChipAddress onClick={(event) => deleteChip(event)}>teste</ChipAddress> */}
                 </S.ContainerChipAddress>
-                <S.AddressesFound>
-                  
-                </S.AddressesFound>
               </S.ContainerFilters>
             )
             :

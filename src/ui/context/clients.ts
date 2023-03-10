@@ -38,7 +38,7 @@ export const filteredConditionClients = selector<IClient[] | null>({
     let filteredConditionClients : IClient[] = []
 
     if (!filters.length){
-      filteredConditionClients = client    
+      filteredConditionClients = []   
     }
     else {
       client.forEach((client, index, clientsArray) => {
@@ -55,9 +55,9 @@ export const filteredConditionClients = selector<IClient[] | null>({
   }
 )
 
-export const addressFilter = atom<string[]>({
+export const addressFilter = atom<string>({
   key: 'addressFilter',
-  default: []
+  default: ''
 })
 
 export const runTimeAddressFilter = atom<string[]>({
@@ -65,69 +65,60 @@ export const runTimeAddressFilter = atom<string[]>({
   default: []
 })
 
-export const matchedFilterAddresses = selector<string[]>({
-  key: 'matchedFilterAddresses',
-  get: ({get}) => {
-    const addressesAvailable = get(clientAddresses)
-    const addressesOnFilter = get(addressFilter)
-
-    let matchedFilterAddresses : string[] = []
-
-    addressesOnFilter.forEach((filterAddress) => {
-      const lowercasedFilterAddress = filterAddress.toLowerCase()
-        let lowercasedAvailableAddress : string[] = []
-        addressesAvailable.forEach((information) => {
-          let number = information.number+'';
-          let street = information.street;
-          let city = information.city;
-          let district = '';
-          let state = '';
-
-          if(information.state){
-              state = information.state
-          }
-          if(information.district){
-              district = information.district
-          }
-          let all = `${street} ${district} ${city} ${state} ${number}`
-          lowercasedAvailableAddress.push(all.toLowerCase())
-        })
-
-      for(let i = 0; i < lowercasedAvailableAddress.length; i++){
-        if (lowercasedAvailableAddress[i].includes(lowercasedFilterAddress)){  
-            matchedFilterAddresses.forEach(match => {
-              if (!match.includes(lowercasedFilterAddress)){
-                matchedFilterAddresses.push(lowercasedAvailableAddress[i])
-              }
-            })     
-        }
-      }
-    })
-
-    return matchedFilterAddresses
-  }
-})
-
 export const filteredAddressClients = selector<IClient[]>({
   key: 'filteredAddressClients',
   get: ({get}) => {
     const client = get(clients)
-    const filters = get(addressFilter)
+    const filter = get(addressFilter)
 
     let filteredAddressClients : IClient[] = []
 
-    if(!filters.length){
-      filteredAddressClients = client
+    if(!filter.length){
+      filteredAddressClients = []
     } else {
       client.forEach((client, index, clientsArray) => {
-        for (let i = 0; i < filters.length; i++){
-          if (Object.keys(client.address).some((information) => information === filters[i])) {
-            filteredAddressClients.push(clientsArray[index])
-          } 
-        }
-        })
+          let keys = Object.keys(client.address)
+          keys.forEach(key => {
+            if (client.address[`${key}`] === filter){
+              filteredAddressClients.push(clientsArray[index])  
+            }
+          })
+     }  )
     }
 
     return filteredAddressClients
+  }
+})
+
+export const filteredClients = selector<IClient[]>({
+  key: 'filteredClients',
+  get: ({get}) => {
+    const client = get(clients)
+    const conditions = get(filteredConditionClients)
+    const addresses = get(filteredAddressClients)
+
+    let filteredClients : IClient[] = []
+
+    if(!conditions.length && !addresses.length){
+      filteredClients = client
+    } else {
+      switch (true){
+        case conditions.length !== 0 && !addresses.length:
+          filteredClients = conditions
+        break;
+        case addresses.length !== 0  && !conditions.length:
+          filteredClients = addresses
+        break;
+        case conditions.length !== 0 && addresses.length !== 0:
+          let newClients = []
+          for(let i = 0; i < conditions.length; i++){
+            newClients.push(addresses.find(client => client === conditions[i]))
+          }
+          filteredClients = newClients
+        break;
+      }
+    }
+
+    return filteredClients
   }
 })
