@@ -1,3 +1,5 @@
 import { IGeolocation, IAddress } from "..";
 
-export type getGeolocationRepository = (address: Partial<IAddress>) => Promise<IGeolocation>
+export interface getGeolocationRepository { 
+    get: (address: Partial<IAddress>) => Promise<IGeolocation>; 
+}

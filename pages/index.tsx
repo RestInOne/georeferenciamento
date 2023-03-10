@@ -1,15 +1,14 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Head from 'next/head'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { getGeolocation } from '../src/infra/gateways/getGeolocation'
+import getGeolocation from '../src/infra/gateways/getGeolocation'
 import { IClient } from '../src/domain/entities/client'
 import Home from '../src/ui/screens/Home'
 import { clients } from '../src/ui/context'
-import { getClients } from '../src/infra/gateways/getClients'
-import useFormatNameCondition from '../src/ui/hooks/useFormatNameCondition'
 import { ConditionName } from '../src/domain'
+import AxiosAdapter from '../src/infra/http/AxiosAdapter'
 
-export default function Index({ propClients, data } : InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Index({ propClients } : InferGetServerSidePropsType<typeof getServerSideProps>) {
 
   const [newClients, setClients] = useRecoilState(clients)
 
@@ -30,7 +29,8 @@ export default function Index({ propClients, data } : InferGetServerSidePropsTyp
 
 export const getServerSideProps : GetServerSideProps = async () => {
 
-  const data = await getClients()
+  const httpClient = new AxiosAdapter();
+  const geolocation = new getGeolocation(httpClient)
 
   const propClients : IClient[] = [
     {
@@ -58,7 +58,7 @@ export const getServerSideProps : GetServerSideProps = async () => {
         city: "São Paulo",
         state: "São Paulo"
       },
-      geolocation: await getGeolocation({street: "Rua Francisco Rodrigues Seckler", number: 111, city: "São Paulo"})
+      geolocation: await geolocation.get({street: "Rua Francisco Rodrigues Seckler", number: 111, city: "São Paulo"})
     },
     {
       id: "jfjfd8jd0g",
@@ -82,7 +82,7 @@ export const getServerSideProps : GetServerSideProps = async () => {
         city: "São Paulo",
         state: "São Paulo"
       },
-      geolocation: await getGeolocation({street: "Rua Virgínia Ferni", number: 400, city: "São Paulo"})
+      geolocation: await geolocation.get({street: "Rua Virgínia Ferni", number: 400, city: "São Paulo"})
     },
     {
       id: "kghkf8d830",
@@ -109,14 +109,13 @@ export const getServerSideProps : GetServerSideProps = async () => {
         city: "São Paulo",
         state: "São Paulo"
       },
-      geolocation: await getGeolocation({street: "Rua Apucarana", number: 111, city: "São Paulo"})
+      geolocation: await geolocation.get({street: "Rua Apucarana", number: 111, city: "São Paulo"})
     }
   ]
 
   return {
     props: {
       propClients,
-      data
     }
   }
 }
