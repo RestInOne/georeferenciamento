@@ -37,7 +37,7 @@ export function Sidebar() {
   }
 
   const addAddress = () => {
-    setAddressFilters(old => [...old, ...runTimeFilter])
+    setAddressFilters(old => [...old, ...matched])
   }
 
   const clearAddressFilter = () => {

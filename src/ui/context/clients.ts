@@ -111,6 +111,23 @@ export const filteredAddressClients = selector<IClient[]>({
 
     let filteredAddressClients : IClient[] = []
 
+    if (filter.length > 0){
+      client.forEach((client, index, clientsArray) => {
+        let keys = Object.keys(client.address)
+        keys.forEach(key => {
+          if (client.address[`${key}`] === filter){
+            if(!filteredAddressClients.includes(clientsArray[index])){
+            filteredAddressClients.push(clientsArray[index])  
+           } else {
+            if (filteredAddressClients.includes(clientsArray[index])){
+              const index = filteredAddressClients.findIndex(address => address === clientsArray[index])
+              filteredAddressClients.splice(index, 1)
+            }
+           }}
+        })
+      })
+    }
+
     return filteredAddressClients
   }
 })
@@ -124,8 +141,22 @@ export const filteredClients = selector<IClient[]>({
 
     let filteredClients : IClient[] = []
 
-   filteredClients = client
+    if (conditions.length > 0 || addresses.length > 0){
 
-    return filteredClients
+    if(conditions.length > 0 && addresses.length > 0){
+      for(let i = 0; i < conditions.length; i++){
+        filteredClients.push(addresses.find(client => client === conditions[i]))
+      }
+    } else if (conditions.length < 0 && addresses.length > 0) {
+      filteredClients = addresses
+    } else {
+      filteredClients = conditions
+    }
+
+   } else {
+     filteredClients = client
+   }
+
+   return filteredClients
   }
 })
