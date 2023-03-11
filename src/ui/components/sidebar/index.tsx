@@ -13,7 +13,6 @@ export function Sidebar() {
   const [filters, setFilters] = useRecoilState(conditionFilter);
   const [addressesFilter, setAddressFilters] = useRecoilState(addressFilter)
   const [runTimeFilter, setRunTimeFilters] = useRecoilState(runTimeAddressFilter)
-  const [currentAddress, setCurrentAddress] = useState<string>('')
   const matched = useRecoilValue(matchedAddresses)
   const [modalIsOpened, setModalIsOpened] = useRecoilState(modalIsActive)
 
@@ -32,14 +31,12 @@ export function Sidebar() {
   }
 
   const checkAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrentAddress(event.target.value)
-    setRunTimeFilters(old => [...old, currentAddress])
+    setRunTimeFilters(event.target.value)
   }
 
   const clearAddressFilter = () => {
-    setRunTimeFilters([])
+    setRunTimeFilters('')
     setAddressFilters([])
-    setCurrentAddress('')
   }
 
   return (
@@ -105,7 +102,7 @@ export function Sidebar() {
           {
             addressFilterIsOpened ? (
               <S.ContainerFilters>
-                <S.InputSearchAddress onChange={(e) => checkAddress(e)} value={currentAddress}/>
+                <S.InputSearchAddress onChange={(e) => checkAddress(e)} value={runTimeFilter}/>
                 <S.ButtonCancel onClick={clearAddressFilter}>Limpar Filtro</S.ButtonCancel>
                 <S.AddressesFound>
                   <h3>Endereços correspondentes:</h3>

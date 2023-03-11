@@ -60,9 +60,9 @@ export const addressFilter = atom<string[]>({
   default: []
 })
 
-export const runTimeAddressFilter = atom<string[]>({
+export const runTimeAddressFilter = atom<string>({
   key: 'runTimeAddressFilter',
-  default: []
+  default: ''
 })
 
 export const matchedAddresses = selector<string[]>({
@@ -70,36 +70,13 @@ export const matchedAddresses = selector<string[]>({
   get: ({get}) => {
     const runTime = get(runTimeAddressFilter)
     const addresses = get(clientAddresses)
+    if (!runTime) return []
 
-    let matchedAddresses : string[] = []
+    const addressesInArray : string[] = addresses.map(address => [address.city, address.number+'', address.state, address.street]).flat()
 
-    if(runTime.length > 0){
-      const addressesInArray : string[] = []
-      
-      for(let indexCurrent = 0; indexCurrent < addresses.length; indexCurrent++) {
-        addressesInArray.push(addresses[indexCurrent].city, addresses[indexCurrent].number+'', addresses[indexCurrent].state, addresses[indexCurrent].street)
-      }
-
-      addressesInArray.forEach(value => {
-        for(let i = 0; i < runTime.length; i++){
-          let current = runTime[i]
-
-          for (let index = 0; index < current.length; index++){
-            if(value.at(index) === current.at(index)){
-              if(!matchedAddresses.includes(value)){
-                matchedAddresses.push(value)
-              }} else {
-                if (matchedAddresses.includes(value)){
-                  const index = matchedAddresses.findIndex(address => address === value)
-                  matchedAddresses.splice(index, 1)
-                }
-              }
-            }
-          }
-      })
-    }
-
-    return matchedAddresses
+    return addressesInArray.filter(data => {
+      return !!data.match(runTime)?.length
+    })
   }
 })
 
@@ -145,28 +122,14 @@ export const filteredClients = selector<IClient[]>({
     const conditionsFilter = get(conditionFilter)
 
     let filteredClients : IClient[] = []
-
-    if (conditions.length > 0 || addresses.length > 0){
-
-    if(conditions.length > 0 && addresses.length > 0){
-      for(let i = 0; i < conditions.length; i++){
-        filteredClients.push(addresses.find(client => client === conditions[i]))
+    if (!conditions.length && !addresses.length) return client   
+    if (conditions.length && addresses.length) {
+      for (const condition of conditions) {
+        filteredClients.push(addresses.find((client) => client === condition));
       }
-    } else if (!conditions.length && addresses.length > 0) {
-
-      if(conditionsFilter.length > 0){
-        filteredClients = []
-      } else {
-       filteredClients = addresses
-      }
-    } else {
-      filteredClients = conditions
-    }
-
-   } else {
-     filteredClients = client
-   }
-
-   return filteredClients
+    } 
+    if (!conditions.length && addresses.length && conditionsFilter.length) return []; 
+    if (!conditions.length && addresses.length && !conditionsFilter.length) return addresses;    
+    return conditions
   }
 })
