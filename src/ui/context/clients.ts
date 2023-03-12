@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 import { IAddress } from "../../domain";
 import { IClient } from "../../domain/entities/client";
-import { ConditionName, ICondition } from "../../domain/entities/condition";
+import { ConditionName } from "../../domain/entities/condition";
 
 
 export const clients = atom<IClient[]>({
@@ -36,20 +36,13 @@ export const filteredConditionClients = selector<IClient[] | null>({
     const filters = get(conditionFilter)
 
     let filteredConditionClients : IClient[] = []
-
-    if (!filters.length){
-      filteredConditionClients = []   
-    }
-    else {
-      client.forEach((client, index, clientsArray) => {
-      for (let i = 0; i < filters.length; i++){
-        if (clientsArray[index].exam.conditions.some((condition) => condition.name === filters[i])) {
-          filteredConditionClients.push(clientsArray[index])
-        } 
+    if (!filters.length) return [];
+    client.forEach((client, index, clientsArray) => {
+      for (const filter of filters){
+        const haveSomeConditionInClient = clientsArray[index].exam.conditions.some((condition) => condition.name === filter);
+        if (haveSomeConditionInClient) return filteredConditionClients.push(clientsArray[index])
       }
-      })
-    }
-
+    })
     return filteredConditionClients
   }
   }
@@ -74,9 +67,7 @@ export const matchedAddresses = selector<string[]>({
 
     const addressesInArray : string[] = addresses.map(address => [address.city, address.number+'', address.state, address.street]).flat()
 
-    return addressesInArray.filter(data => {
-      return !!data.match(runTime)?.length
-    })
+    return addressesInArray.filter(data => !!data.match(runTime)?.length)
   }
 })
 
@@ -84,31 +75,26 @@ export const filteredAddressClients = selector<IClient[]>({
   key: 'filteredAddressClients',
   get: ({get}) => {
     const client = get(clients)
-    const filter = get(matchedAddresses)
+    const filters = get(matchedAddresses)
 
     let filteredAddressClients : IClient[] = []
+    if(!filters.length) return [];
 
-    if (filter.length > 0){
-      client.forEach((client, index, clientsArray) => {
-        let keys = Object.keys(client.address)
-        keys.forEach(key => {
-          for (let i = 0; i < filter.length; i++) {
-            if (client.address[`${key}`] === filter[i]){
-              if(!filteredAddressClients.includes(clientsArray[index])){
-              filteredAddressClients.push(clientsArray[index])  
-             } else {
-              if (filteredAddressClients.includes(clientsArray[index])){
-                const foundedIndex = filteredAddressClients.findIndex(address => address === clientsArray[index])
-                filteredAddressClients.splice(foundedIndex, 1)
-              }
-             }}
+    client.forEach((client, index, clientsArray) => {
+      Object.keys(client.address).forEach(key => {
+        const clientAddress = client.address[key];
+        const IncludesClientInFilteredAddressClients = filteredAddressClients.includes(clientsArray[index]);
+        for (const filter of filters) {
+          if (clientAddress !== filter) return [];
+          if(!IncludesClientInFilteredAddressClients){
+            filteredAddressClients.push(clientsArray[index])  
+          } else {
+            const foundedIndex = filteredAddressClients.findIndex(address => address === clientsArray[index])
+            filteredAddressClients.splice(foundedIndex, 1)
           }
-        })
+        }
       })
-    } else {
-      filteredAddressClients = []
-    }
-
+    })
     return filteredAddressClients
   }
 })
